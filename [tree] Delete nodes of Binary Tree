@@ -1,0 +1,143 @@
+MÔ TẢ BÀI TOÁN
+
+Đối với Cây NPTK thì chương trình có thể tạo cây 1 cách tự động từ 1 dãy số cho trước (các gía trị lần lượt được thêm vào cây theo thứ tự được nhập). Tuy nhiên, với 1 cây nhị phân bất kỳ (không nhất thiết là cây NPTK) thì việc tạo cây phải thực hiện thủ công như yêu cầu bên dưới.
+
+Cây nhị phân không có tính chất gì đặc biệt, ngoại trừ mỗi node có tối đa 2 nhánh cây con, cây có thể chứa nhiều giá trị giống nhau, không cần có điều kiện ràng buộc giữa giá trị các node với nhau.
+
+ 
+
+INPUT
+
+- Một số nguyên dương n, là giá trị của node gốc, 0<n<100
+
+- Các dòng tiếp theo là 1 bộ gồm có 3 giá trị: đầu tiên là 1 trong 2 ký tự viết hoa 'L' hoặc 'R', kế đến là 2 số nguyên a, b có giá trị không quá 2 tỷ. Ví dụ: L 3 5 có nghĩa là chèn số 5 vào bên trái số 3 trong cây.  R -2 10 có nghĩa là chèn số 10 vào bên trái số -2 trong cây.
+
+- Dòng kế tiếp là 1 ký tự chữ cái không phải 'L' và 'R', cho biết kết thúc việc tạo cây.
+
+- Các dòng tiếp theo là 1 bộ gồm có 2 giá trị: đầu tiên là 1 trong 2 chuỗi viết hoa "DL" hoặc "DR", kế đến là 1 số nguyên a có giá trị không quá 2 tỷ. Ví dụ: DL 3 có nghĩa là xóa số bên trái số 3,  DR 10 có nghĩa là xóa số bên phải số 10.
+
+- Dòng cuối cùng là 1 chuỗi bất kỳ không phải "DL" và"DR", cho biết kết thúc việc xóa các node ra khỏi cây.
+
+Yêu cầu:
+
+- Vì cây có thể lưu trữ nhiều giá trị giống nhau, nếu có nhiều giá trị a trong cây thì chỉ xử lý cho giá trị a được tìm thấy đầu tiên theo cơ chế duyệt NLR.
+
+***ĐỐI VỚI THAO TÁC THÊM
+
+- Nếu a không có trong cây thì không chèn được và KHÔNG XUẤT THÔNG BÁO
+
+- Nếu a (xuất hiện đầu tiên) đã có node con bên phải mà yêu cầu chèn bên phải a thì không chèn được và  KHÔNG XUẤT THÔNG BÁO, tương tự cho bên trái.
+
+***ĐỐI VỚI THAO TÁC XÓA
+
+- Nếu a không có trong cây thì  xuất thông báo cout<<"Node khong ton tai\n";
+
+- Nếu a không có con trên trái mà yêu cầu xóa bên trái a thì xuất thông báo cout << "Khong co node ben trai\n";, tương tự cho bên phải
+
+- Nếu a có con trên trái và yêu cầu xóa bên trái a nhưng node muốn xóa lại không phải là node lá thì cũng không xóa được và xuất thông báo cout << "Khong la node la nen khong xoa duoc\n";
+
+
+
+
+struct node
+{
+	int info;
+	node* left;
+	node* right;
+};
+typedef node* Tree;
+node* getNode(int x)
+{
+	node* p = new node;
+	if (p != NULL)
+	{
+		p->info = x;
+		p->left = p->right = NULL;
+	}
+	return p;
+}
+node* Search(Tree& t, int x)
+{
+	if (t != NULL) {
+		node* a = Search(t->left, x);
+		if (t->info == x) {
+			return t;
+		}
+		node* b = Search(t->right, x);
+		if (a)
+			return a;
+		return b;
+	}
+	else
+		return NULL;
+}
+void LNR(Tree& t)
+{
+
+	if (t != NULL)
+	{
+		LNR(t->left);
+		cout << t->info << " ";
+		LNR(t->right);
+	}
+}
+void SetLeft(Tree t, int x)
+{
+	node* p = getNode(x);
+	if (t != NULL)
+	{
+		if (t->left == NULL)
+			t->left = p;
+	}
+}
+void SetRight(node* t, int x)
+{
+	node* p = getNode(x);
+	if (t != NULL)
+	{
+		if (t->right == NULL)
+			t->right = p;
+	}
+}
+bool isLeaf(Tree& t)
+{
+	if (t->left == NULL && t->right == NULL)
+		return true;
+	return false;
+}
+void DeleteLeft(Tree t)
+{
+	if (t == NULL)
+		cout << "Node khong ton tai\n";
+	else
+	{
+		if (t->left == NULL)
+			cout << "Khong co node ben trai\n";
+		if (t->left != NULL && isLeaf(t->left) != true)
+			cout << "Khong la node la nen khong xoa duoc\n";
+		if(t->left != NULL && isLeaf(t->left) == true)
+		{
+			node* p = t->left;
+			delete p;
+			t->left = NULL;
+		}
+	}
+}
+void DeleteRight(Tree t)
+{
+	if (t == NULL)
+		cout << "Node khong ton tai\n";
+	else
+	{
+		if (t->right == NULL)
+			cout << "Khong co node ben phai\n";
+		if (t->right != NULL && isLeaf(t->right) != true)
+			cout << "Khong la node la nen khong xoa duoc\n";
+		if(t->right != NULL && isLeaf(t->right) == true)
+		{
+			node* p = t->right;
+			delete p;
+			t->right = NULL;
+		}
+	}
+}
