@@ -1,0 +1,89 @@
+KHUYẾT ĐIỂM CỦA DSLK ĐÔI SO VỚI DSLK ĐƠN:
+
+- Tốn chi phí gấp đôi so với DSLK đơn cho việc lưu trữ các mối liên kết.
+- Việc cập nhật nặng nề hơn trong một số trường hợp, ví dụ "Thêm vào đầu, thêm vào cuối ds" (SV thử cài đặt xem sao)
+
+- ...
+
+TUY NHIÊN, BÙ LẠI, DSLK ĐÔI CŨNG CÓ NHIỀU ƯU ĐIỂM VƯỢT TRỘI HƠN SO VỚI DSLK ĐƠN. (To be continue....)
+
+ 
+
+MÔ TẢ BÀI TOÁN
+
+Viết 1 chương trình game đơn giản như sau:
+
+- Chương trình cho phép người dùng (user) chọn thực hiện 1 thao tác nào đó từ Menu, trả về kết quả thực hiện thao tác đó.
+
+- Trong template chỉ yêu cầu viết các hàm hỗ trợ nhập và xuất 1 danh sách liên kết KÉP/ĐÔI.
+
++Đối với case 1. Create a DList, user nhập các số nguyên dương cho đến khi nhập -1 là kết thúc việc nhập. Các giá trị vừa nhập sẽ lần lượt được thêm vào CUỐI danh sách. Đợt nhập đầu tiên được xem là Tạo 1 danh sách mới. Những đợt nhập sau đó là thêm các phần tử mới vào danh sách hiện có.
+
++ Đối với case 2. Print the DList, xuất các giá trị được lưu trong danh sách trên cùng 1 dòng, cách nhau bởi 1 khoảng trắng. Nếu danh sách rỗng thì xuất thông báo "List is empty"
+
+ 
+
+INPUT & OUTPUT
+
+ -  Theo template
+ 
+ 
+ 
+ 
+ void init(DList& L)
+{
+    L.pHead = NULL;
+    L.pTail = NULL;
+}
+DNode* getNode(int x)
+{
+    DNode* p = new DNode;
+    if (p != NULL) {
+        p->info = x;
+        p->pNext = NULL;
+        p->pPrev = NULL;
+    }
+    return p;
+}
+void TailNode(DList& L, int x) {
+    DNode* p = getNode(x);
+    if (L.pHead == NULL)
+    {
+        L.pHead = L.pTail = p;
+    }
+    else {
+        L.pTail->pNext = p;
+        L.pTail = p;
+    }
+}
+void createList(DList& L)
+{
+ 
+    int  x;
+    while (1)
+    {
+        cin >> x;
+        if (x == -1)
+        {
+            break;
+        }
+        else
+            TailNode(L, x);
+    }
+}
+void printList(DList& L)
+{
+    DNode* p = L.pHead;
+    if (p == NULL)
+    {
+        cout << "List is empty";
+    }
+    while (p != NULL)
+    {
+        cout << p->info << " ";
+        p = p->pNext;
+    }
+
+    
+
+}
