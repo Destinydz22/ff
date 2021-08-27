@@ -1,0 +1,166 @@
+MÔ TẢ BÀI TOÁN
+
+Hãy viết chương trình thực hiện các thao tác cơ bản trên một bảng băm chứa các số nguyên với những yêu cầu sau:
+
+- Tạo 1 bảng băm chứa các số nguyên
+
+- Thêm 1 (1 số) phần tử vào bảng băm
+
+- Xóa 1 (1 số) phần tử ra khỏi bảng băm
+
+INPUT
+
+ - Số nguyên đầu tiên là m (0 < m < 1.000). Đây là số địa chỉ có trên bảng băm. Các địa chỉ được đánh số bắt đầu từ 0 đến m – 1.
+
+- Số nguyên thứ 2 là n (0<=n<=10000). Đây là số lượng phần tử sẽ được lưu trữ vào bảng băm
+
+- n số nguyên tiếp theo là các (giá trị) khóa của các phần tử được lưu vào bảng băm, có giá trị không quá 2 tỷ.
+
+- Các dòng tiếp theo là những thao tác thêm hoặc xóa phần tử ra khỏi bảng băm. Mỗi dòng  chứa hai con số a và b. Nếu a có giá trị là 1 đại diện cho  tình huống thêm b vào bảng băm. Nếu a có giá trị là 2 đại diện cho  tình huống xóa b ra khỏi bảng băm. Nếu trong bảng băm có nhiều giá trị b thì chỉ xóa gía trị được tìm thấy đầu tiên.
+
+- Dòng cuối cùng là 1 số khác 1 và 2 cho biết kết thúc quá trình cập nhật bảng băm.
+
+ **SV không cần kiểm tra điều kiện nhập
+
+OUTPUT
+
+- Xuất theo template
+
++ Đầu tiên là xuất bảng băm được tạo ban đầu
+
++ Ứng với mỗi thao tác thêm phần tử mới vào bảng băm thì xuất thông báo cout<<"\nInsert "<<b;
+
++ Ứng với mỗi thao tác xóa phần tử ra khỏi bảng băm thì xuất thông báo  cout<<"\nDelete "<<b; Trường hợp không tìm thấy b trong bảng băm thì xuất thông báo cout<<"\nKhong co phan tu co khoa "<< b;
+
++ Cuối cùng là xuất bảng băm sau khi được cập nhật
+
+
+
+#include <iostream>
+#include <cstring>
+#include <string>
+using namespace std;
+#define MAX 100
+struct node {
+    int key;
+    node* next;
+};
+struct Hash {
+    node* bucket[MAX];
+    int m;
+};
+int hashfunc(Hash H, int key) {
+    return (key % H.m);
+}
+void initHash(Hash& H) {
+    for (int i = 0; i < MAX; i++)
+        H.bucket[i] = NULL;
+}
+node* getnode(int x) {
+    node* p = new node;
+    if (p != NULL) {
+        p->key = x;
+        p->next = NULL;
+    }
+    return p;
+}
+void insertHash(Hash& H, int x) {
+    int i = hashfunc(H, x);
+    node* p = H.bucket[i], * q = NULL;; 
+    while (p != NULL && x > p->key) {
+        q = p;
+        p = p->next;
+    }
+    if (q != NULL) {
+        node* g = getnode(x);
+        g->next = p;
+        q->next = g;
+    }
+
+    else {       
+        if (p == NULL) {
+            H.bucket[i] = getnode(x);
+        }
+        else {
+            node* g = getnode(x);
+            g->next = p;
+            H.bucket[i] = g;
+        }
+    }
+}
+node* search(Hash H, int k) {
+    int b = hashfunc(H, k);
+    node* p = H.bucket[b];
+    while (p != NULL && k > p->key)
+        p = p->next;
+    if (p == NULL || k != p->key)
+        return NULL;
+    return p;
+}
+void traverseAllHash(Hash H) {
+    for (int i = 0; i < H.m; i++)
+    {
+        node* p = H.bucket[i];
+        cout << "Bucket " << i << ": ";
+        while (p != NULL) {
+            cout << p->key << " ";
+            p = p->next;
+        }
+        cout << endl;
+    }
+    cout << endl;
+}
+void deleteEle(Hash& H, int x) {
+    int b = hashfunc(H, x);
+    node* p = H.bucket[b], * q = NULL;
+    while (p->key != x) {
+        q = p;
+        p = p->next;
+    }
+    if (p == H.bucket[b]) {
+        H.bucket[b] = p->next;
+        p->next = NULL;
+        delete p;
+    }
+    else {
+        q->next = p->next;
+        p->next = NULL;
+        delete p;
+    }
+}
+int main()
+{
+    Hash H;
+    cin >> H.m; 
+    initHash(H); 
+
+    int n, x; cin >> n; 
+    for (int i = 1; i <= n; i++)
+    {
+        cin >> x;
+        insertHash(H, x); 
+    }
+    cout << "Created Hash:" << endl;
+    traverseAllHash(H); 
+    int a, b;
+    cin >> a;
+    while (a == 1 || a == 2) {
+        if (a == 1) {
+            cin >> b;
+            insertHash(H, b);
+            cout << "Insert " << b << endl;
+        }
+        if (a == 2) {
+            cin >> b;
+            cout << "Delete " << b << endl;
+            if (search(H, b) == NULL)
+                cout << "Khong co phan tu co khoa " << b << endl;
+            else
+                deleteEle(H, b);
+        }
+        cin >> a;
+    }
+    cout << "Updated Hash:" << endl;
+    traverseAllHash(H); 
+    return 0;
+}
