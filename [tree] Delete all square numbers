@@ -1,0 +1,128 @@
+MÔ TẢ BÀI TOÁN
+Khai báo kiểu Cây nhị phân tìm kiếm có tên là Tree mà mỗi phần tử chứa một số nguyên. Hãy viết các hàm thực hiện các yêu cầu sau:
+
+Xây dựng CNPTK gồm n số nguyên, theo thứ tự các giá trị được nhập từ bàn phím.
+
+Xóa tất cả các số chính phương có trong cây.
+
+Xuất cây trước vào sau khi xóa
+
+YÊU CẦU: CHỌN PHẦN TỬ THAY THẾ LÀ PHẦN TỬ PHẢI NHẤT BÊN NHÁNH TRÁI
+
+INPUT
+
+- Một số nguyên dương n, chỉ số nút của cây, 0<n<100
+
+- Dãy gồm n số nguyên dương, đôi một khác nhau. Các giá trị được thêm vào cây theo thứ tự mà nó được nhập.
+
+OUTPUT
+
+- Xuất theo template.
+
+
+Node* getnode(int x)
+{
+	Node* p = new Node;
+	if (p == NULL)
+		return NULL;
+	p->info = x;
+	p->pLeft = p->pRight = NULL;
+	return p;
+}
+
+void insertNode(Node*& t, int x)
+{
+	if (t == NULL)
+	{
+		Node* p = new Node;
+		p->info = x;
+		p->pLeft = NULL;
+		p->pRight = NULL;
+		t = p;
+	}
+	else
+	{
+		if (x < t->info)
+			insertNode(t->pLeft, x);
+		else if (x > t->info)
+			insertNode(t->pRight, x);
+		else
+			cout << "Can not insert " << x << endl;
+	}
+}
+void inputTree(Tree& t)
+{
+
+	int  n,x;
+	cin >> n;
+	for (int i = 0; i < n; i++)
+	{
+		cin >> x;
+		insertNode(t, x);
+	}
+}
+
+void NLR(Tree t)
+{
+	if (t != NULL)  //dieu kien dung
+	{
+		cout << t->info << " "; //xu ly tuong ung voi nhu cau
+		NLR(t->pLeft); // goi de quy
+		NLR(t->pRight); //goi de quy
+	}
+
+}
+bool isSquare(int n) 
+{
+	
+	for (int i = 1; i <= n; i++)
+	{
+			if (i * i == n)
+				return true;
+	}
+	return false;
+	
+}
+void SearchStandFor(Tree& p, Tree& q)
+{
+	if (q->pRight)
+		SearchStandFor(p, q->pRight);
+	else
+	{
+		p->info = q->info;
+		p = q;
+		q = q->pLeft;
+	}
+}
+void deleteNode(Tree& t, int x)
+{
+	if (t != NULL)
+	{
+		if (t->info < x) deleteNode(t->pRight, x);
+		else
+		{
+			if (t->info > x) deleteNode(t->pLeft, x);
+
+			Node* p = t;
+
+			if (t->pLeft == NULL) t = t->pRight;
+			else
+			{
+				if (t->pRight == NULL) t = t->pLeft;
+				else SearchStandFor(p, t->pLeft);
+			}
+			delete p;
+		}
+	}
+}
+void deleteSquareNumbers(Tree& t)
+{
+	if (t != NULL)
+	{
+		deleteSquareNumbers(t->pLeft);
+		deleteSquareNumbers(t->pRight);
+		if (isSquare(t->info) == true)
+			deleteNode(t, t->info);
+		
+	}
+}
