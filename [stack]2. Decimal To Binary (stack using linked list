@@ -1,0 +1,105 @@
+MÔ TẢ BÀI TOÁN
+
+Cho một số thập phân làm đầu vào, chúng ta cần viết chương trình để chuyển đổi số từ hệ thập phân đã cho thành số ở hệ nhị phân tương đương.
+
+Phương pháp biến đổi một số nguyên, ở hệ thập phân sang hệ nhị phân tương đương, có thể được tiến hành bằng cách chia số này cho 2, và những số dư được viết xuống vào hàng (đơn vị) của nó. Kết quả lại tiếp tục được chia 2, và số dư lại được viết xuống vào hàng (chục) của nó. Phương thức này được tiếp tục nhắc lại cho đến khi thương số của phép chia là 0
+
+INPUT
+
+- Một số nguyên n, 0<=n<=2 tỷ
+
+OUTPUT
+
+- Biểu diễn nhị phân của n.
+
+
+struct node {
+    int info;
+    node* pnext;
+};
+
+
+struct Stack {
+    node* phead;
+    node* ptail;
+};
+
+node* getnode(int x) {
+    node* p = new node;
+    if (p == NULL) {
+        cout << "Can't active node.";
+        exit(1);
+    }
+    p->info = x;
+    p->pnext = NULL;
+    return p;
+}
+void add_tail(Stack& L, int x) {
+    node* p = getnode(x);
+    if (L.phead == NULL) {
+        L.phead = p;
+        L.ptail = p;
+    }
+    else {
+        L.ptail->pnext = p;
+        L.ptail = p;
+    }
+}
+void inputList(Stack& L, int n) {
+    if (n == 0) {
+        L.phead = NULL;
+        return;
+    }
+    for (int i = 1; i <= n; i++) {
+        int x;
+        cin >> x;
+        add_tail(L, x);
+    }
+
+}
+
+void add_head(Stack& L, int x) {
+    node* p = getnode(x);
+    if (L.phead == NULL) {
+        L.phead = p;
+        L.ptail = p;
+    }
+    else {
+        p->pnext = L.phead;
+        L.phead = p;
+    }
+}
+
+
+void Init(Stack& S) {
+    S.phead = S.ptail = NULL;
+}
+void DecimaltoBinary1(int n, Stack& S) {
+    if (n < 0) {
+        cout << "Can't attemp this number.";
+        return;
+    }
+    if (n == 0) {
+        cout << 0;
+    }
+    if (n > 0) {
+        while (1) {
+            if (n == 0) {
+                break;
+            }
+            else {
+                int x = (n % 2);
+                add_head(S, x);
+                n = n / 2;
+            }
+        }
+    }
+}
+void printStack(Stack S) {
+    node* p = S.phead;
+    while (p != NULL) {
+        cout << p->info;
+        p = p->pnext;
+    }
+
+}
