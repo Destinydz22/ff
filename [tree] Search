@@ -1,0 +1,137 @@
+MÔ TẢ BÀI TOÁN
+
+Cây nhị phân tìm kiếm (Binary Search Tree) là một cây nhị phân có tính chất sau:
+
+- Nội dung của các nút thuộc cây con bên trái < nội dung nút gốc (The left subtree of a node contains only nodes with keys lesser than the node’s key)
+
+- Nội dung của các nút thuộc cây con bên phải > nội dung nút gốc (The right subtree of a node contains only nodes with keys greater than the node’s key)
+
+- Cây con bên trái, bên phải cũng là cây NPTK (The left and right subtree each must also be a binary search tree)
+
+Người ta sử dụng cây NPTK với mục đích tìm kiếm nhanh. Hãy viết các hàm thực hiện các yêu cầu tìm kiếm sau:
+
+Tìm phần tử có khóa x trên cây. Nếu có thì xuất “Found”. Nếu không có thì xuất “Not found”.
+
+Tìm giá trị lớn nhất, nhỏ nhất trên cây
+
+
+ 
+
+INPUT
+
+- Một số nguyên dương n, chỉ số nút của cây, 0<n<100
+
+- Dãy gồm n số nguyên, đôi một khác nhau. Các giá trị được thêm vào cây theo thứ tự mà nó được nhập.
+
+- Một số nguyên x là giá trị cần tìm.
+
+OUTPUT
+
+- Xuất theo template.
+
+
+
+struct Node
+{
+	int info;
+	Node* left;
+	Node* right;
+};
+typedef Node* Tree;
+Node* getnode(int x)
+{
+	Node* p = new Node;
+	if (p == NULL)
+		return NULL;
+	p->info = x;
+	p->left = p->right = NULL;
+	return p;
+}
+Node* Search(Node* t, int x)
+{
+	if (t != NULL)
+	{
+		if (t->info == x)
+			return t;
+		if (x < t->info)
+			return Search(t->left, x); // return co nghia la den dich roi khong can tim nua, neu ko co reuturn thi co the se tim them o dau do nua
+		return Search(t->right, x);
+	}
+	return NULL;
+}
+void insert(Node*& t, int x)
+{
+	if (t == NULL)
+	{
+		Node* p = new Node;
+		p->info = x;
+		p->left = NULL;
+		p->right = NULL;
+		t = p;
+	}
+	else
+	{
+		if (x < t->info)
+			insert(t->left, x);
+		else if (x > t->info)
+			insert(t->right, x);
+	}
+}
+void inputTree(Tree& t)
+{
+
+	int n, x;
+	cin >> n;
+
+	for (int i = 0; i < n; i++)
+	{
+		cin >> x;
+		insert(t, x);
+	}
+}
+void NLR(Tree t)
+{
+	if (t != NULL)  //dieu kien dung
+	{
+		cout << t->info << " "; //xu ly tuong ung voi nhu cau
+		NLR(t->left); // goi de quy
+		NLR(t->right); //goi de quy
+	}
+
+}
+void LNR(Tree t)
+{
+	if (t != NULL)  //dieu kien dung
+	{
+		LNR(t->left); // goi de quy
+		cout << t->info << " "; //xu ly tuong ung voi nhu cau
+		LNR(t->right); //goi de quy
+	}
+
+}
+void LRN(Tree t)
+{
+	if (t != NULL)  //dieu kien dung
+	{
+		LRN(t->left); // goi de quy
+		LRN(t->right); //goi de quy
+		cout << t->info << " "; //xu ly tuong ung voi nhu cau
+	}
+
+}
+int maxValue(Tree t)
+{
+	if (t->right == NULL)
+	{
+		return t->info;
+	}
+	return maxValue(t->right);
+}
+int minValue(Tree t)
+{
+	if (t->left == NULL)
+	{
+		return t->info;
+	}
+	return minValue(t->left); 
+}
