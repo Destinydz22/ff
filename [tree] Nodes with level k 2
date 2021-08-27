@@ -1,0 +1,102 @@
+MÔ TẢ BÀI TOÁN
+
+Quy ước Mức của 1 nút (level of node) trên cây như sau:
+
+- Nút gốc có mức là 0
+
+- Mức của nút khác = mức của nút cha + 1
+
+Viết hàm in các nút có mức là k trong cây, in theo thứ tự từ PHẢI QUA TRÁI
+
+INPUT
+
+- Một số nguyên dương n, chỉ số nút của cây, 0<n<100
+
+- Dãy gồm n số nguyên, đôi một khác nhau. Các giá trị được thêm vào cây theo thứ tự mà nó được nhập.
+
+- Số nguyên k chỉ mức đang muốn in
+
+ 
+
+OUTPUT
+
+- In tất cả các nút ở mức thứ k của cây, theo thứ tự từ phải qua trái và số lượng nút ở mức k
+
+- Xuất theo template
+
+
+
+
+Node* getNode(int x)
+{
+    Node* p = new Node;
+    if (p == NULL)
+        return NULL;
+    p->info = x;
+    p->pLeft = p->pRight = NULL;
+    return p;
+}
+
+void insertNode(Tree& T, int x)
+{
+    if (T == NULL)
+    {
+        Tree p = new Node;
+        p->info = x;
+        p->pLeft = NULL;
+        p->pRight = NULL;
+        T = p;
+    }
+    else
+    {
+        if (x < T->info)
+            insertNode(T->pLeft, x);
+        else
+            insertNode(T->pRight, x);
+    }
+}
+
+void inputTree(Tree& T)
+{
+    int n, x;
+    cin >> n;
+
+    for (int i = 0; i < n; i++)
+    {
+        cin >> x;
+        insertNode(T, x);
+    }
+}
+
+void NLR(Tree T)
+{
+    if (T != NULL)
+    {
+        cout << T->info << " ";
+        NLR(T->pLeft);
+        NLR(T->pRight);
+    }
+}
+
+void nWL(Tree T, int k, int& n)
+{
+    if (T != NULL)
+    {
+        if (k == 0)
+        {
+            cout << T->info << " ";
+            n++;
+        }
+        nWL(T->pRight, k - 1, n);
+        nWL(T->pLeft, k - 1, n);
+    }
+}
+
+int nodesWithLevel(Tree T, int k, int n)
+{
+    cout << "\nList of nodes with level " << k << " (R->L): ";
+    int x = 0;
+    nWL(T, k, x);
+    cout << "\nNumber of nodes with level " << k << ": ";
+    return x;
+}
