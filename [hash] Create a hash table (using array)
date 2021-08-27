@@ -1,0 +1,75 @@
+MÔ TẢ BÀI TOÁN
+
+Hãy viết chương trình thực hiện thao tác “Nhập xuất cơ bản một bảng băm chứa các số nguyên” với những yêu cầu sau:
+
+- Giải quyết xung đột bằng phương pháp băm lại. Thường cài đặt bảng băm bằng ARRAY
+- Nếu băm bị xung đột thì băm lại. Quá trình băm lại diễn ra cho đến khi không còn xung đột nữa. Các phép băm lại (rehash function) thường sẽ chọn địa chỉ khác cho các phần tử.
+
+- PHƯƠNG PHÁP DÒ TUYẾN TÍNH
+    fj(key) = (f(key)+j) % M, với f(key) là hàm băm chính của bảng băm
++ Khi thêm 1 nút có khóa key, f(key) sẽ xác định địa chỉ i
++ Nếu chưa bị xung đột thì thêm nút mới tại địa chỉ i này.
++ Nếu bị xung đột thì băm lại lần 1, f1 sẽ xét địa chỉ kế tiếp,
++ Nếu lại bị xung đột thì băm lại lần 2, f2 xét địa chỉ kế tiếp nữa, ...
+Tiếp tục cho đến khi tìm được địa chỉ trống để thêm vào.
+
+INPUT
+
+ - Số nguyên đầu tiên là n (0<=n<=10000). Đây là số lượng phần tử sẽ được lưu trữ vào bảng băm
+
+- n số nguyên tiếp theo là các (giá trị) khóa của các phần tử được lưu vào bảng băm, có giá trị không quá 2 tỷ.
+
+ **SV không cần kiểm tra điều kiện nhập
+ 
+ 
+ 
+ struct node
+{
+    int key;
+};
+struct Hash
+{
+    node bucket[M];
+    int n;
+};
+int HashFunc(Hash H, int x)
+{
+    return x % M;
+}
+bool isFull(Hash H)
+{
+    return (H.n == M) ? true : false;
+}
+void initHash(Hash& H)
+{
+    
+    for (int i = 0; i < M; i++)
+        H.bucket[i].key = NULLKEY;
+    H.n = 0;
+}
+int hashfunc(int k)
+{
+    return k % M;
+}
+void insertHash(Hash& H, int k)
+{
+    if (isFull(H))
+    {
+        cout << "\nBang bam bi day, khong them duoc";
+        return;
+    }
+    int i = hashfunc(k);
+    while (H.bucket[i].key != NULLKEY)
+    {
+        i++;
+        if (i >= M)
+            i %= M;
+    }
+    H.bucket[i].key = k;
+    H.n++;
+}
+void  traverseAllHash(Hash H)
+{
+    for (int i = 0; i < M; i++)
+        cout << H.bucket[i].key << " ";
+}
