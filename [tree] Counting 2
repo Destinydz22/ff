@@ -1,0 +1,202 @@
+MÔ TẢ BÀI TOÁN
+
+Khai báo kiểu Cây nhị phân tìm kiếm có tên là Tree mà mỗi phần tử chứa một số nguyên. Hãy viết các hàm thực hiện các yêu cầu đếm sau:
+
+Đếm xem trong cây T có bao nhiêu số chẵn, bao nhiêu số lẻ ?
+
+Đếm xem trong cây có bao nhiêu nút có giá trị âm? bao nhiêu nút có giá trị dương?
+
+Đếm xem cây có bao nhiêu số nguyên tố và liệt kê các số nguyên tố có trong cây
+
+Xác định chiều cao của cây
+
+ 
+
+INPUT
+
+- Một số nguyên dương n, chỉ số nút của cây, 0<n<100
+
+- Dãy gồm n số nguyên dương, đôi một khác nhau. Các giá trị được thêm vào cây theo thứ tự mà nó được nhập.
+
+OUTPUT
+
+- Xuất theo template.
+
+
+
+struct Node
+{
+	int info;
+	Node* left;
+	Node* right;
+};
+typedef Node* Tree;
+Node* getnode(int x)
+{
+	Node* p = new Node;
+	if (p == NULL)
+		return NULL;
+	p->info = x;
+	p->left = p->right = NULL;
+	return p;
+}
+Node* Search(Node* t, int x)
+{
+	if (t != NULL)
+	{
+		if (t->info == x)
+			return t;
+		if (x < t->info)
+			return Search(t->left, x); // return co nghia la den dich roi khong can tim nua, neu ko co reuturn thi co the se tim them o dau do nua
+		return Search(t->right, x);
+	}
+	return NULL;
+}
+void insert(Node*& t, int x)
+{
+	if (t == NULL)
+	{
+		Node* p = new Node;
+		p->info = x;
+		p->left = NULL;
+		p->right = NULL;
+		t = p;
+	}
+	else
+	{
+		if (x < t->info)
+			insert(t->left, x);
+		else if (x > t->info)
+			insert(t->right, x);
+		else
+			cout << "Can not insert " << x << endl;
+	}
+}
+void inputTree(Tree& t)
+{
+
+	int  n,x;
+	cin >> n;
+	for (int i = 0; i < n; i++)
+	{
+		cin >> x;
+		insert(t, x);
+	}
+}
+
+void LNR(Tree t)
+{
+	if (t != NULL)  //dieu kien dung
+	{
+		LNR(t->left); // goi de quy
+		cout << t->info << " "; //xu ly tuong ung voi nhu cau
+		LNR(t->right); //goi de quy
+	}
+
+}
+int countNodes(Tree& t)
+{
+	if (t == NULL)
+		return 0;
+	return (1 + countNodes(t->right) + countNodes(t->left));
+}
+int depthOfTree(Tree& t)
+{
+	if (t == NULL)
+		return -1;
+	else if (t->right == NULL && t->left == NULL)
+		return 0;
+	else
+		return 1 + max(depthOfTree(t->right), depthOfTree( t->left));
+}
+int countEven(Tree& t, int& n)
+{
+	
+	if (t != NULL)
+	{
+		countEven(t->right,n);
+		countEven(t->left,n);
+		if (t->info % 2 == 0)
+			n++;
+	}
+	return n;
+}
+int countOdd(Tree& t, int& n)
+{
+
+	if (t != NULL)
+	{
+		countOdd(t->right, n);
+		countOdd(t->left, n);
+		if (t->info % 2 != 0)
+			n++;
+	}
+	return n;
+}
+bool isPrime(int n) 
+{
+	int dem = 0;
+	for (int i = 1; i < n; i++)
+	{
+		if (n % i == 0)
+			dem++;
+	}
+	if (dem == 1)
+		return true;
+	return false;
+}
+int dem3 = 0;
+int countPrime(Tree& t)
+{
+	if (t != NULL)
+	{
+		countPrime(t->right);
+		countPrime(t->left);
+		if (isPrime(t->info) == true)
+			dem3++;
+	}
+	return dem3;
+}
+void listPrime(Tree& t)
+{
+	if (t != NULL)
+	{
+		if (isPrime(t->info) == true && t->info > 0)
+			cout << t->info << " ";
+		listPrime(t->left);
+		listPrime(t->right);
+		
+		
+	}
+}
+int dem2 = 0;
+int countNegative(Tree& t)
+{
+	
+	if (t != NULL)
+	{
+		
+		countNegative(t->right);
+		countNegative(t->left);
+		if (t->info < 0)
+			dem2++;
+	}
+	return dem2;
+}
+int dem1 = 0;
+int countPositive(Tree& t)
+{
+	
+	if (t != NULL)
+	{
+		
+		countPositive(t->left);
+		if (t->info > 0)
+		{
+			dem1++;
+		}
+		countPositive(t->right);
+		
+	}
+	return dem1;
+}
