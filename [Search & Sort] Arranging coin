@@ -1,0 +1,66 @@
+Bạn có N đồng tiền cần xếp vào một tủ các ngăn xếp, trong đó ngăn xếp thứ K chỉ chứa được K đồng tiền.
+
+Cho N, tìm số lượng các ngăn xếp được chứa đầy các đồng tiền.
+
+N là số nguyên không âm và nằm trong khoảng 32 – bit signed integer.
+
+
+Ví dụ:
+
+
+Cho N = 5;
+
+
+Các đồng tiền có thể xếp như sau:
+
+¤
+
+¤ ¤
+
+¤ ¤
+
+
+Bời vì ngăn xếp thứ 3 chưa được xếp đầy cho nên kết quả trả về là 2
+
+
+INPUT
+
+Gồm 1 dòng chứa số N.
+
+
+OUTPUT
+
+Số lượng ngăn xếp được chứa đầy
+
+
+
+#include <iostream>
+using namespace std;
+int arranging_coin(int n)
+{
+    int dem = 0;
+    int tong = 0;
+    for (int i = 1; i != 0; i++)
+    {
+        if (tong < n)
+        {
+            tong = tong + i;
+            dem++;
+        }
+        else
+        {
+            break;
+        }
+    }
+    if (tong == n)
+        return dem;
+    return dem - 1;
+
+}
+
+int main()
+{
+    int n;
+    cin >> n;
+    cout << arranging_coin(n);
+}
