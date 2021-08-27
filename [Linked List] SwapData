@@ -1,0 +1,167 @@
+MÔ TẢ BÀI TOÁN
+
+Hãy viết chương trình thực hiện thao tác “Hoán vị giá trị của 2 node trong danh sách” với những yêu cầu sau:
+
+- Nhập một danh sách gồm n phần tử. Thêm phần tử mới vào cuối danh sách.
+
+- Xuất danh sách. Nếu danh sách rỗng thì xuất thông báo "List is empty".
+
+- Tìm 2 node (đầu tiên) chứa giá trị x và y. Nếu danh sách có nhiều node chứa giá trị giống nhau thì chỉ xét node đầu tiên tìm thấy tính từ đầu danh sách. Hoán vị (đổi chỗ) giá trị của 2 node đó cho nhau. Liên kết giữa các node trong danh sách không thay đổi . Node ban đầu chứa giá trị x thì đổi lại là chứa giá trị y và ngược lại.
+
+- Xuất danh sách sau khi thực hiện hoán vị. Nếu thao tác hoán vị không thực hiện được thì xuất thông báo "Can not swap"
+
+
+
+INPUT
+
+ - Số nguyên đầu tiên là n (0 <= n <= 1.000.000). Đây là số lượng phần tử trong danh sách.
+
+- n số nguyên tiếp theo là các giá trị được lưu vào danh sách, có giá trị không quá 2 tỷ.
+
+- 2 số nguyên x,y (có giá trị không quá 2 tỷ) là 2 giá trị được dùng để kiểm tra và hoán vị
+
+ **SV không cần kiểm tra điều kiện nhập
+
+OUTPUT
+
+- Xuất theo template
+
+
+
+
+struct node {
+    int info;
+    node* pNext;
+};
+struct List {
+    node* pHead;
+    node* pTail;
+};
+void Init(List& L) {
+    L.pHead = L.pTail = NULL;
+}
+node* getnode(int x) {
+    node* p = new node;
+    if (p == NULL) {
+        cout << "Can't active node.";
+        exit(1);
+    }
+    p->info = x;
+    p->pNext = NULL;
+    return p;
+}
+void add_tail(List& L, int x) {
+    node* p = getnode(x);
+    if (L.pHead == NULL) {
+        L.pHead = p;
+        L.pTail = p;
+    }
+    else {
+        L.pTail->pNext = p;
+        L.pTail = p;
+    }
+}
+void inputList(List& L, int n) {
+    if (n == 0) {
+        L.pHead = NULL;
+        return;
+    }
+    for (int i = 1; i <= n; i++) {
+        int x;
+        cin >> x;
+        add_tail(L, x);
+    }
+
+}
+void outputList(List L) {
+    node* Prc = L.pHead;
+    if (Prc == NULL) {
+        cout << "List is empty";
+    }
+    while (Prc != NULL) {
+        cout << Prc->info << " ";
+        Prc = Prc->pNext;
+    }
+    return;
+}
+void add_head(List& L, int x) {
+    node* p = getnode(x);
+    if (L.pHead == NULL) {
+        L.pHead = p;
+        L.pTail = p;
+    }
+    else {
+        p->pNext = L.pHead;
+        L.pHead = p;
+    }
+}
+int index_count(List L) {
+    node* p = L.pHead;
+    int x = 1;
+    if (L.pHead == NULL) {
+        x = 0;
+        return x;
+    }
+    else {
+        while (p != L.pTail) {
+            p = p->pNext;
+            x++;
+        }
+        return x;
+    }
+}
+node* findElement(List& L, int x) {
+    int count = 1;
+    node* p_check = L.pHead;
+    int n = index_count(L);
+    if (p_check == NULL) {
+        cout << "List is empty";
+        return p_check;
+    }
+
+    while (p_check != NULL) {
+        if (x > n) {
+            cout << "The index is invalid";
+            exit(1);
+        }
+        if (count == x) {
+            return p_check;
+        }
+        if (count < x) {
+            p_check = p_check->pNext;
+            count++;
+        }
+
+
+    }
+
+}
+node* find(List L, int x)
+{
+    node* p = L.pHead;
+    while (p != NULL)
+    {
+        if (p->info == x)
+        {
+            break;
+        }
+        else {
+            p = p->pNext;
+        }
+    }
+    return p;
+}
+node* swapData(List& L, int x, int y)
+{
+    node* p = find(L, x);
+    node* q = find(L, y);
+    if (p == NULL || q == NULL)
+    {
+        return NULL;
+    }
+    else {
+        swap(p->info, q->info);
+    }
+    return p;
+    return q;
+}
