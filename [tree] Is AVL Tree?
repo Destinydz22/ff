@@ -1,0 +1,127 @@
+MÔ TẢ BÀI TOÁN
+
+Ta dùng cây NPTK với mục đích tìm kiếm nhanh. Trường hợp tối ưu nhất là cây NPTK hoàn toàn cân bằng = O(log2n), tuy nhiên khi thêm hay xóa nút dễ làm cây này mất cân bằng nên sẽ tốn chi phí cân bằng lại cây rất lớn. Giải pháp: tổ chức cây NPTK đạt trạng thái cân bằng yếu hơn nhằm giảm thiểu chi phí cân bằng khi thêm, xóa nút → cây AVL ra đời.
+
+Cây AVL là cây nhị phân tìm kiếm mà tại tất cả các nút, chiều cao của cây con bên trái và bên phải chênh lệch nhau không quá 1.
+
+Cho 1 cây nhị phân tìm kiếm T, hãy viết chương trình kiểm tra xem T có phải là cây AVL không.
+
+
+
+INPUT
+
+- Một số nguyên dương n, chỉ số nút của cây, 0<n<100
+
+- Dãy gồm n số nguyên, đôi một khác nhau. Các giá trị được thêm vào cây NPTK theo thứ tự mà nó được nhập.
+
+OUTPUT
+
+- Giá trị 1 hoặc 0 tương ứng T là cây AVL hay không phải cây AVL .
+
+
+
+
+struct node
+{
+	int info;
+	node* left;
+	node* right;
+};
+typedef node* Tree;
+node* getnode(int x)
+{
+	node* p = new node;
+	if (p == NULL)
+		return NULL;
+	p->info = x;
+	p->left = p->right = NULL;
+	return p;
+}
+node* search(node* t, int x)
+{
+	if (t != NULL)
+	{
+		if (t->info == x)
+			return t;
+		if (x < t->info)
+			return search(t->left, x); // return co nghia la den dich roi khong can tim nua, neu ko co reuturn thi co the se tim them o dau do nua
+		return search(t->right, x);
+	}
+	return NULL;
+}
+void insert(node*& t, int x)
+{
+	if (t == NULL)
+	{
+		node* p = new node;
+		p->info = x;
+		p->left = NULL;
+		p->right = NULL;
+		t = p;
+	}
+	else
+	{
+		if (x < t->info)
+			insert(t->left, x);
+		else if (x > t->info)
+			insert(t->right, x);
+	}
+}
+void inputTree(Tree& t)
+{
+
+	int n, x;
+	cin >> n;
+
+	for (int i = 0; i < n; i++)
+	{
+		cin >> x;
+		insert(t, x);
+	}
+}
+void NLR(Tree t)
+{
+	if (t != NULL)  //dieu kien dung
+	{
+		cout << t->info << " "; //xu ly tuong ung voi nhu cau
+		NLR(t->left); // goi de quy
+		NLR(t->right); //goi de quy
+	}
+
+}
+void LNR(Tree t)
+{
+	if (t != NULL)  //dieu kien dung
+	{
+		LNR(t->left); // goi de quy
+		cout << t->info << " "; //xu ly tuong ung voi nhu cau
+		LNR(t->right); //goi de quy
+	}
+
+}
+void LRN(Tree t)
+{
+	if (t != NULL)  //dieu kien dung
+	{
+		LRN(t->left); // goi de quy
+		LRN(t->right); //goi de quy
+		cout << t->info << " "; //xu ly tuong ung voi nhu cau
+	}
+
+}
+int treeLevel(node* t) {
+	if (t == NULL) return 1;
+	return 1 + max(treeLevel(t->left), treeLevel(t->right));
+}
+bool isAVL(Tree& t)
+{
+	if (t == NULL)
+	{
+		return 1;
+	}
+	int a = abs(treeLevel(t->right) - treeLevel(t->left));
+	if (a <= 1 && isAVL(t->left) && isAVL(t->right) )
+		return 1;
+	return 0;
+	
+}
