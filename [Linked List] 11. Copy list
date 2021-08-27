@@ -1,0 +1,44 @@
+Khi sao chép 1 đối tượng x, ta có 02 hình thức là shallow copy và deep copy. Deep copy sẽ tạo ra một bản sao của đối tượng x với đầy đủ các thành phần bên trong như có trong x. Còn shallow copy hiểu nôm na là đặt 1 tên mới cho đối tượng đang muốn copy, khi đó cả 2 tên đều cùng liên kết đến 1 vùng nhớ của x, tức sử dụng chung vùng nhớ.
+
+Với danh sách liên kết, deep copy có nghĩa là tạo ra một bản sao cho tất cả các node trong danh sách và liên kết các bản sao này đúng với thứ tự của danh sách ban đầu.
+
+INPUT
+Một danh sách liên kết đơn.
+
+OUTPUT
+Một danh sách liên kết đơn khác là deep copy của danh sách liên kết đơn trên.
+
+Danh sách bản sao phải có đầy đủ số node, các node phải cùng giá trị nhưng có địa chỉ khác với các node của danh sách ban đầu.
+
+ 
+ 
+ 
+ void add_tail(List& L, int data) {
+    Node* new_node = new Node;
+    if (new_node != NULL) {
+        new_node->next = NULL;
+        new_node->val = data;
+    }
+    if (L.head == NULL) {
+        L.head = L.tail = new_node;
+    }
+    else {
+        L.tail->next = new_node;
+        L.tail = new_node;
+    }
+}
+
+void copy(List& L, List& L1) {
+    L1.head = new Node();
+    L1.head->val = L.head->val;
+    Node* q = L1.head;
+    const Node* p = L.head->next;
+
+    while (p)
+    {
+        q->next = new Node();
+        q = q->next;
+        q->val = p->val;
+        p = p->next;
+    }
+}
