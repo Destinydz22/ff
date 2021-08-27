@@ -1,0 +1,73 @@
+Anagram là thuật đảo chữ, trong đó các chữ cái của từ ban đầu được đổi chỗ để tạo ra từ khác có nghĩa. Đây là trò chơi được nhiều người học tiếng anh yêu thích bởi nó vừa giúp nâng cao vốn từ vựng, vừa là cách xả stress khá hay. 
+
+Bạn hãy viết chương trình hỗ trợ người chơi trò chơi này nhé.
+
+Cho 2 chuỗi s và t, xác định t có phải là anagram của s hay không?
+
+
+Ví dụ:
+
+
+s = "anagram", t = "nagaram": t là anagram của s
+s = "rat", t = "car": t không phải là anagram của s
+
+
+INPUT
+
+Gồm 2 dòng chuỗi s và chuỗi t
+
+Dòng 1: chuỗi s;
+
+Dòng 2: chuỗi t.
+
+Lưu ý:
+
+Chuỗi s và chuỗi t chỉ chứa kí tự viết thường
+
+OUTPUT
+
+Nếu t là anagram của s, xuất ra màn hình: IS ANAGRAM
+
+Ngược lại, xuất ra màn hình: NOT ANAGRAM!!!
+
+
+
+
+#include<iostream>
+#include<string>
+using namespace std;
+int anagram(string a, string b)
+{
+    int mapS[26] = { 0 };
+    int mapT[26] = { 0 };
+    for (int i = 0; i < a.length(); i++)
+    {
+        mapS[a[i] - 'a']++;
+        mapT[b[i] - 'a']++;
+    }
+
+    for (int i = 0; i < 26; i++)
+    {
+        if (mapS[i] != mapT[i])
+            return 0;
+    }
+    if (a.length() != b.length())
+        return 0;
+    return 1;
+}
+int main()
+{
+    string a,b;
+    getline(cin, a);
+    getline(cin, b);
+    if (anagram(a, b) == 1)
+    {
+        cout << "IS ANAGRAM";
+    }
+    else
+    {
+        cout << "NOT ANAGRAM!!!";
+    }
+    return 0;
+
+}
