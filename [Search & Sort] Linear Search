@@ -1,0 +1,47 @@
+Viết chương trình tìm kiếm một số trong mảng bất kỳ với yêu cầu như sau:
+
+INPUT
+
+Dòng đầu tiên chứa số n (không quá một triệu), là số phần tử trong mảng
+
+Dòng thứ hai chứa n số nguyên dương (không quá một tỷ), cách nhau bởi khoảng trắng, đây là các phần tử của mảng
+
+Dòng thứ ba chứa số m (không quá một triệu), đây là số lượng số cần phải tìm.
+
+Dòng cuối cùng của input chứa m số nguyên dương x1, x2, ..., xm, giá trị mỗi số không quá một tỷ. Đây là các số cần tìm.
+
+
+ 
+
+OUPUT
+
+Ứng với mỗi số cần tìm, xuất ra trên một dòng vị trí của số đó trong mảng. Quy ước số đầu tiên của mảng có vị trí là 0 và nếu số cần tìm không có trong mảng xuất ra -1. Nếu số cần tìm xuất hiện ở nhiều vị trí trong mảng, xuất ra vị trí ở gần phía đầu mảng nhất
+
+LƯU Ý: CHỈ DÙNG 1 MẢNG a ĐỂ LƯU DÃY SỐ, còn m số sau đó thì không cần lưu lại, chỉ đơn giản là nhập 1 số rồi cho tìm số đó trong mảng a luôn, tìm xong trả về kết quả và nhập số khác để tìm tiếp. Ai dùng 2 mảng a, b thì phải duyệt mảng b 2 lần rất tốn thời gian khi m lớn.
+
+
+
+#include <iostream>
+using namespace std;
+int linearsearch(int a[], int n, int x) {
+	for (int i = 0; i < n; i++)
+		if (a[i] == x)
+			return i;
+	return -1;
+}
+int main()
+{
+	int n;
+	cin >> n;
+	int* a = new int[n];
+	for (int i = 0; i < n; i++)
+		cin >> a[i];
+	int m;
+	cin >> m; //so con so can tim
+	int q;
+	for (int j = 0; j < m; j++) {
+		cin >> q;
+		cout << linearsearch(a, n,q) << endl;
+	}
+	return 0;
+}
