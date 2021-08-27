@@ -1,0 +1,85 @@
+MÔ TẢ BÀI TOÁN
+
+Quy ước Mức của 1 nút (level of node) trên cây như sau:
+
+- Nút gốc có mức là 0
+
+- Mức của nút khác = mức của nút cha + 1
+
+Viết hàm in các nút có mức là k trong cây, in theo thứ tự từ PHẢI QUA TRÁI
+
+INPUT
+
+- Một số nguyên dương n, chỉ số nút của cây, 0<n<100
+
+- Dãy gồm n số nguyên, đôi một khác nhau. Các giá trị được thêm vào cây theo thứ tự mà nó được nhập.
+
+- Số nguyên k chỉ mức đang muốn in
+
+ 
+
+OUTPUT
+
+- In tất cả các nút ở mức thứ k của cây, theo thứ tự từ phải qua trái
+
+
+
+struct node
+{
+	int info;
+	node* left;
+	node* right;
+};
+typedef node* Tree;
+node* getnode(int x)
+{
+	node* p = new node;
+	if (p == NULL)
+		return NULL;
+	p->info = x;
+	p->left = p->right = NULL;
+	return p;
+}
+void insert(node*& t, int x)
+{
+	if (t == NULL)
+	{
+		node* p = new node;
+		p->info = x;
+		p->left = NULL;
+		p->right = NULL;
+		t = p;
+	}
+	else
+	{
+		if (x < t->info)
+			insert(t->left, x);
+		else if (x > t->info)
+			insert(t->right, x);
+	}
+}
+void inputTree(Tree& t)
+{
+
+	int n, x;
+	cin >> n;
+
+	for (int i = 0; i < n; i++)
+	{
+		cin >> x;
+		insert(t, x);
+	}
+}
+
+void nodesWithLevel(Tree& t, int k)
+{
+	if (t != NULL)
+	{
+		if (k == 0)
+		{
+			cout << t->info << " ";
+		}
+		nodesWithLevel(t->right, k - 1);
+		nodesWithLevel(t->left, k - 1);
+	}
+}
