@@ -1,0 +1,81 @@
+Ưu điểm của danh sách liên kết là việc có thể dễ dàng bổ sung phần tử ở một vị trí nào đó đã được xác định trước ví dụ như đầu danh sách, cuối danh sách.
+
+MÔ TẢ BÀI TOÁN
+
+ 
+
+Hãy viết chương trình thực hiện thao tác “Nhập xuất cơ bản một danh sách liên kết đơn” với những yêu cầu sau:
+
+- Nhập một danh sách gồm n phần tử. Thêm phần tử mới vào cuối danh sách.
+
+- Xuất danh sách. Các giá trị cách nhau 1 khoảng trắng. Nếu danh sách rỗng thì xuất thông báo "List is empty".
+
+ 
+
+INPUT
+
+ - Số nguyên đầu tiên là n (0 <= n <= 1.000.000). Đây là số lượng phần tử trong danh sách.
+
+- n số nguyên tiếp theo là các giá trị được lưu vào danh sách, có giá trị không quá 2 tỷ.
+
+ **SV không cần kiểm tra điều kiện nhập
+
+OUTPUT
+
+- Xuất theo template
+
+ struct Node {
+    int info;
+    Node* pnext;
+};
+struct List {
+    Node* phead;
+    Node* ptail;
+};
+void Init(List& L) {
+    L.phead = L.ptail = NULL;
+}
+Node* getnode(int x) {
+    Node* p = new Node;
+    if (p == NULL) {
+        cout << "Can't active node.";
+        exit(1);
+    }
+    p->info = x;
+    p->pnext = NULL;
+    return p;
+}
+void add_tail(List& L, int x) {
+    Node* p = getnode(x);
+    if (L.phead == NULL) {
+        L.phead = p;
+        L.ptail = p;
+    }
+    else {
+        L.ptail->pnext = p;
+        L.ptail = p;
+    }
+}
+void inputList(List& L,int n) {
+    if (n == 0) {
+        L.phead = NULL;
+        return;
+    }
+    for (int i = 1; i <= n; i++) {
+            int x;
+            cin >> x;
+            add_tail(L, x);
+    }
+         
+}
+void outputList(List L) {
+    Node* Prc = L.phead;
+    if (Prc == NULL) {
+        cout << "List is empty";
+    }
+    while (Prc != NULL) {
+        cout << Prc->info << " ";
+        Prc = Prc->pnext;
+    }
+    return;
+}
