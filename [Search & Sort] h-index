@@ -1,0 +1,54 @@
+Chỉ số h-index là một trong các chỉ số để đo lường mức độ ảnh hưởng tích lũy của một nhà khoa học. Người ta có thể dựa trên chỉ số này để đánh giá chất lượng nghiên cứu cũng như ảnh hưởng của nhà khoa học.
+
+Định nghĩa chỉ số h-index như sau (https://en.wikipedia.org/wiki/H-index): Chỉ số H của một nhà khoa học là H công trình trong số N công trình của nhà khoa học đó được trích dẫn ít nhất là H lần và (N-H) được trích dân dưới H lần.
+
+
+Hãy viết chương trình để tính toán chỉ số h-index này.
+
+
+Ví dụ:
+
+Với số lần trích dẫn các công trình của một nhà khoa học được cho như sau:
+
+citations = [3, 0, 6, 1, 5] thì chỉ số h-index = 3.
+
+Nhà khoa học này có 5 công trình, mỗi công trình có số lần trích dẫn lần lượt là 3, 0, 6, 1, 5.
+
+Trong 5 công trình này có 3 công trình có ít nhất 3 lần trích dẫn, và 2 công trình còn lại có dưới 3 lần trích dẫn.
+
+INPUT
+
+Gồm 2 dòng.
+
+Dòng 1: Số lượng N công trình của một nhà khoa học
+
+Dòng 2: Mảng chứa số lần trích dẫn của mỗi công trình
+
+
+OUTPUT
+
+Chỉ số h-index
+
+Lưu ý: Nếu có nhiều giá trị h-index thì giá trị đầu tiên tìm được sẽ là chỉ số h-index
+
+
+
+void select_sort(int *A, int n)
+{
+	int i, j, min_idx;
+	for (i = 0; i < n - 1; i++)
+	{
+		min_idx = i;
+		for (j = i + 1; j < n; j++)
+			if (A[j] < A[min_idx])
+				min_idx = j;
+		swap(A[min_idx], A[i]);
+	}
+}
+int calculateHIndex(int* citation, int n) {
+	select_sort(citation, n);
+	for (int i = 0; i < n; i++) {
+		if (n - i <= citation[i])
+			return n - i;
+	}
+}
