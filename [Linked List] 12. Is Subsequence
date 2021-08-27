@@ -1,0 +1,34 @@
+Dãy con của một mảng là một mảng thu được bằng cách xóa đi một số phần tử của mảng ban đầu. Ví dụ mảng: [3, 2, 1] có thể có các dãy con [3, 2], [2, 1], [3, 1]
+
+Hãy viết chương trình kiểm tra xem danh sách này có phải là dãy con của danh sách kia hay không.
+
+INPUT
+Input gồm 02 dòng. Mỗi dòng tương ứng với một danh sách. Các phần tử trong mỗi danh sách là những số nguyên không âm và danh sách kết thúc khi gặp số -1
+
+OUTPUT
+Nếu trong 02 danh sách trên, danh sách này là dãy con của danh sách kia xuất ra màn hình chuỗi “TRUE” nếu không xuất ra chuỗi “FALSE
+
+
+
+
+
+bool is_subsequence(List L1, List L2)
+{
+    Node* pTmp1 = L1.head;
+    Node* pTmp2 = L2.head;
+    while (pTmp2 != NULL)
+    {
+        if (pTmp1 == NULL)
+            return true;
+        if (pTmp1->val != pTmp2->val)
+        {
+            pTmp2 = pTmp2->next;
+        }
+        else
+        {
+            pTmp1 = pTmp1->next;
+            pTmp2 = pTmp2->next;
+        }
+    }
+    return false;
+}
