@@ -1,0 +1,86 @@
+Cài đặt một số thao tác cơ bản trên một đồ thị hữu hướng, mỗi đỉnh của đồ thị được đặt tên.
+INPUT:
+
+Dòng đầu tiên chứa 03 số v, e và n, đây lần lượt là số đỉnh, số cạnh của đồ thị cùng với số thao tác xử lý, giá trị mỗi số không quá 1 tỷ.
+Dòng tiếp theo chứa v chuỗi, mỗi chuỗi bao gồm một hoặc nhiều ký tự hoa trong bảng chữ cái Tiếng Anh và cách nhau bởi khoảng trắng. Đây là danh sách tên các đỉnh của đồ thị.
+e dòng tiếp theo, mỗi dòng chứa 02 chuỗi u và i (cách nhau bởi khoảng trắng), thể hiện việc có một cạnh nối từ đỉnh u sang đỉnh i trong đồ thị.
+n dòng tiếp theo, mỗi dòng tương ứng với một thao tác xử lý các thao tác có cú pháp như sau:
+Thao tác kiểm tra tính kề của 02 đỉnh, dòng này bắt đầu bằng số 1, theo sau là 02 chuỗi u và i cách nhau bởi khoảng trắng
+Thao tác tìm kiếm đỉnh lân cận của 01 đỉnh, dòng này bắt đầu bằng số 2, theo sau là chuỗi u
+OUTPUT:
+
+Ứng với thao tác kiểm tra tính kề của 02 đỉnh, xuất ra màn hình chuỗi TRUE nếu đỉnh u kề với đỉnh i. Nếu đỉnh u không kề với đỉnh i xuất ra chuỗi FALSE
+Ứng với thao tác tìm kiếm đỉnh lân cận của 02 đỉnh, xuất ra màn hình trên cùng một dòng danh sách các đỉnh kề với đỉnh u, các đỉnh xuất theo thứ tự trong danh sách đỉnh ở dòng thứ 02 của input và cách nhau bởi khoảng trắng. Nếu không có đỉnh nào kề với đỉnh u xuất ra chuỗi NONE
+
+
+
+
+class Graph
+{
+private:
+	vector < vector<int> >G;
+	vector<string>name;
+	map<string, int> index;
+public:
+	void nhap(int v, int e)
+	{
+		G = vector<vector<int> >(v, vector<int>(v, 0)); //khoi tao moi phan tu trong o nho bang 0
+		name = vector<string>(v, "");
+		for (int i = 0; i < v; i++)
+		{
+			cin >> name[i];
+			index[name[i]] = i;// anh xa chuoi thanh index
+		}
+		//nhap canh, luu thong tin canh 
+
+		for (int j = 0; j < e; j++)
+		{
+			string a, b;
+			cin >> a >> b;
+			G[index[a]][index[b]] = 1;
+		}
+
+	}
+	bool ke(string u, string v)
+	{
+		if (G[index[u]][index[v]] != 0)
+			return true;
+		return false;
+	}
+
+	void myProcess(int n)
+	{
+		for (int i = 0; i < n; i++)
+		{
+			int key;
+			cin >> key;
+			if (key == 1)
+			{
+				string a, b;
+				cin >> a >> b;
+				if (ke(a, b) == true)
+					cout << "TRUE" << endl;
+				else
+					cout << "FALSE" << endl;
+			}
+			if (key == 2)
+			{
+				string a;
+				int dem = 0;
+				cin >> a;
+				for (int i = 0; i < G[index[a]].size(); i++)
+				{
+					if (G[index[a]][i] != 0)
+					{
+						cout << name[i] << " ";
+						dem++;
+					}
+				}
+				if (dem == 0)
+					cout << "NONE" << endl;
+				else
+					cout << endl;
+			}
+		}
+	}
+};
