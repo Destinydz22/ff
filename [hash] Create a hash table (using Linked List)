@@ -1,0 +1,102 @@
+MÔ TẢ BÀI TOÁN
+
+Hãy viết chương trình thực hiện thao tác “Nhập xuất cơ bản một bảng băm chứa các số nguyên” với những yêu cầu sau:
+
+- Cài đặt bảng băm bằng danh sách liên kết.
+- Các phần tử bị băm vào cùng địa chỉ (bị đụng độ) được gom thành một danh sách liên kết (gọi là 1 bucket). Mỗi phần tử trên bảng băm cần khai báo thêm trường next chỉ nút kế xung đột cùng địa chỉ.
+- Các phần tử được băm thành m danh sách liên kết (từ 0 đến m-1).
+- Khi thêm 1 phần tử có khóa key, f(key) sẽ xác định địa chỉ i ứng với DSLK i mà phần tử sẽ được thêm vào.
+
+- f(key) = key % M
+INPUT
+
+ - Số nguyên đầu tiên là m (0 < m < 1.000). Đây là số địa chỉ có trên bảng băm. Các địa chỉ được đánh số bắt đầu từ 0 đến m – 1.
+
+- Số nguyên thứ 2 là n (0<=n<=10000). Đây là số lượng phần tử sẽ được lưu trữ vào bảng băm
+
+- n số nguyên tiếp theo là các (giá trị) khóa của các phần tử được lưu vào bảng băm, có giá trị không quá 2 tỷ.
+
+ **SV không cần kiểm tra điều kiện nhập
+
+OUTPUT
+
+- Xuất theo template
+
+
+
+struct node
+{
+	int key;
+	node* next;
+};
+struct Hash
+{
+	node* bucket[MAX];
+	int m;
+};
+node* getnode(int x) {
+	node* p = new node;
+	if (p == NULL) {
+		cout << "Can't active node.";
+		exit(1);
+	}
+	p->key = x;
+	p->next = NULL;
+	return p;
+}
+int hashfunc(Hash H,int k)
+{
+	return k % H.m;
+}
+void initHash(Hash &H)
+{
+	for (int i = 0; i < MAX; i++)
+		H.bucket[i] = NULL;
+}
+void addafter(Hash &H, node* q, int x)
+{
+	node* p = getnode(x);
+	p->next = q->next;
+	q->next = p;
+}
+void addhead(Hash& H, int x, int i)
+{
+	node* p = getnode(x);
+	p->next = H.bucket[i]; 
+	H.bucket[i] = p;
+	
+}
+void insertHash(Hash &H, int x)
+{
+	int i = hashfunc(H,x); // dia chi
+	node* p = H.bucket[i]; // la con tro dau cua dslk thu i
+	node *q = NULL;
+	while (p != NULL && x>p->key)
+	{
+		q = p;
+		p = p->next;
+	}
+	// neu x <= ptu dang xet, x them truoc p, x them sau q
+	if (q != NULL)
+		addafter(H,q,x);
+	else  // danh sach rong, hoac x nho hon gia tri dau
+		addhead(H,x,i);
+}
+void traverse(node* p) // duyet DSLK
+{
+	while (p != NULL)
+	{
+		cout << p->key << ' ';
+		p = p->next;
+	}
+	cout << endl;
+}
+
+void traverseAllHash(Hash H)
+{
+	for (int i = 0; i < H.m; i++)
+	{
+		cout << "Bucket " << i << ": ";
+		traverse(H.bucket[i]);
+	}
+}
