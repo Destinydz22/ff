@@ -1,0 +1,27 @@
+Nhược điểm lớn nhất của danh sách liên kết so với mảng là không thể truy cập ngẫu nhiên. Việc này khiến một số thao tác vốn rất đơn giản có thể trở nên phức tạp. Ví dụ như thao tác đảo ngược danh sách. Dĩ nhiên phức tạp không có nghĩa là bất khả thi, nếu khéo léo bạn vẫn có thể cài đặt được thao tác này với độ phức tạp thời gian là O(n) và độ phức tạp về bộ nhớ là O(1) (không được tạo thêm danh sách phụ)
+
+ 
+
+INPUT
+Một danh sách nguyên dương cách nhau bởi khoảng trắng. Dãy số kết thúc khi gặp số 0 (số 0 này không nằm trong danh sách)
+
+ 
+
+OUTPUT
+Danh sách trên sau khi được đảo ngược
+
+
+
+Node* parent = l.head;
+    Node* temp = l.head->next;
+    l.head = temp->next;
+    parent->next = NULL;
+    temp->next = parent;
+    while (l.head->next)
+    {
+        parent = temp;
+        temp = l.head;
+        l.head = l.head->next;
+        temp->next = parent;
+    }
+    l.head->next = temp;
