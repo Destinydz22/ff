@@ -1,0 +1,103 @@
+MÔ TẢ BÀI TOÁN
+
+Cho một số thập phân làm đầu vào, chúng ta cần viết chương trình để chuyển đổi số từ hệ thập phân đã cho thành số ở hệ nhị phân tương đương.
+
+Phương pháp biến đổi một số nguyên, ở hệ thập phân sang hệ nhị phân tương đương, có thể được tiến hành bằng cách chia số này cho 2, và những số dư được viết xuống vào hàng (đơn vị) của nó. Kết quả lại tiếp tục được chia 2, và số dư lại được viết xuống vào hàng (chục) của nó. Phương thức này được tiếp tục nhắc lại cho đến khi thương số của phép chia là 0
+
+INPUT
+
+- Một số nguyên n, 0<=n<=2 tỷ
+
+OUTPUT
+
+- Biểu diễn nhị phân của n.
+
+
+
+
+void Init(Stack& S)
+{
+    S.n = 0;
+}
+int IsEmpty(Stack S)
+{
+    return (S.n == 0);
+}
+int IsFull(Stack S)
+{
+    return (S.n == MAX);
+}
+void Push(Stack& S, int x)
+{
+    if (IsFull(S) == 1)
+    {
+        cout << "Stack is empty";
+    }
+    else
+    {
+        S.arr[S.n] = x;
+        S.n++;
+    }
+}
+void Pop(Stack& S) {
+    if (S.n == 0) {
+        cout << "Stack is empty";
+    }
+    else {
+        S.arr[S.n - 1] = NULLDATA;
+        S.n--;
+
+    }
+}
+int Top(Stack& S) {
+    if (S.n == 0) {
+        cout << "Stack is empty";
+        return NULLDATA;
+    }
+    else {
+        return S.arr[S.n - 1];
+        
+    }
+}
+void printStack(Stack& S) {
+    if (S.n == 0) {
+        return;
+
+    }
+    else {
+        for (int i = 0; i < S.n / 2; i++) {      // dao mang
+            int index = S.n - i - 1;
+            int tmp = S.arr[index];
+            S.arr[index] = S.arr[i];
+            S.arr[i] = tmp;
+        }
+        for (int i = 0; i < S.n; i++) {
+            cout << S.arr[i];
+        }
+    }
+}
+void DecimaltoBinary2(int n, Stack& S) {
+    int x;
+    if (n < 0) {
+        cout << "Can't attemp this number.";
+    }
+    if (n == 0) {
+        cout << 0;
+    }
+    if (n > 0) {
+        while (1) {
+
+            if (n == 0)
+            {
+                break;
+            }
+            else {
+
+                x = (n % 2);
+                S.arr[S.n] = x;
+                n = n / 2;
+                S.n++;
+            }
+        }
+    }
+}
