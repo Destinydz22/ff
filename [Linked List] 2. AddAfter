@@ -1,0 +1,128 @@
+INPUT
+
+Input gồm nhiều dòng, mỗi dòng sẽ có cấu trúc ở 1 trong 4 dạng sau:
+
+- Dạng 0: Dòng bắt đầu bằng con số 0, theo sau là một số nguyên dương < 1000, chương trình cần phải thêm con số này vào đầu danh sách
+
+- Dạng 1: Dòng này bắt đầu bằng con số 1, theo sau là một số nguyên dương < 1000, chương trình cần phải thêm con số này vào cuối danh sách
+
+- Dạng 2: Dòng này bắt đầu bằng con số 2, theo sau là 2 số nguyên a, b < 1000, chương trình cần tìm vị trí đầu tiên mà số a xuất hiện trong danh sách, sau đó thêm số b vào sau số này. Nếu số a không có trong danh sách, thêm b vào đầu danh sách
+
+- Dạng 3: Dòng này bao gồm duy nhất một con số 3. Đây là dòng cuối cùng trong input, báo hiệu input kết thúc
+
+ 
+
+OUTPUT:
+
+In danh sách thu được sau khi thực hiện tất cả các thao tác theo yêu cầu trong input. Danh sách được in trên một dòng với mỗi số cách nhau bởi khoảng trắng.
+
+ ---
+ struct Node {
+	int info;
+	Node* pNext;
+};
+
+struct List {
+	Node* pHead;
+	Node* pTail;
+};
+
+Node* getNode(int x) {
+	Node* n = new Node;
+
+	if (n != NULL) {
+		n->info = x;
+		n->pNext = NULL;
+	}
+
+	return n;
+}
+
+void addHead(List& L, int x) {
+	Node* new_node = getNode(x);
+	
+	if (L.pHead == NULL) {
+		L.pHead = L.pTail = new_node;
+		
+	}
+	else {
+		new_node->pNext = L.pHead;
+		L.pHead = new_node;
+	}
+}
+
+void addTail(List& L, int x) {
+	Node* last_node = getNode(x);
+
+	if (L.pHead == NULL) {
+		L.pHead = L.pTail = last_node;
+		
+	}
+	else {
+		L.pTail->pNext = last_node;
+		L.pTail = last_node;
+	}
+}
+
+void outputList(List L) {
+	Node* p = L.pHead;
+
+	while (p != NULL) {
+		cout << p->info << " ";
+		p = p->pNext;
+	}
+}
+
+Node* timKiem(List L, int x) {
+	Node* p = L.pHead;
+
+	while (p != NULL) {
+		if (p->info == x)
+			return p;
+		p = p->pNext;
+	}
+
+	return NULL;
+}
+
+void insertNode(List& L, Node* a, int x) {
+	Node* p = getNode(x);
+	p->pNext = a->pNext;
+	a->pNext = p;
+}
+
+int main() {
+	int n = 0;
+	
+	int x = 0;
+	int a, b = 0;
+
+	List L;
+	L.pHead = L.pTail = NULL;
+
+	while (n != 3) {
+		cin >> n;
+		if (n == 1) {
+			cin >> x;
+			addTail(L, x);
+		}
+		else if (n == 0) {
+			cin >> x;
+			addHead(L, x);
+		}
+		else if (n == 2) {
+			cin >> a >> b;
+
+			Node* c = timKiem(L, a);
+
+			if (c != NULL)
+				insertNode(L, c, b);
+			else
+				addHead(L, b);
+		}
+	}
+
+	outputList(L);
+
+	return 0;
+}
