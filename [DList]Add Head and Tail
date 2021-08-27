@@ -1,0 +1,100 @@
+KHUYẾT ĐIỂM CỦA DSLK ĐÔI SO VỚI DSLK ĐƠN:
+
+- Tốn chi phí gấp đôi so với DSLK đơn cho việc lưu trữ các mối liên kết.
+- Việc cập nhật nặng nề hơn trong một số trường hợp, ví dụ "Thêm vào đầu, thêm vào cuối ds" (SV thử cài đặt xem sao)
+
+- ...
+
+TUY NHIÊN, BÙ LẠI, DSLK ĐÔI CŨNG CÓ NHIỀU ƯU ĐIỂM VƯỢT TRỘI HƠN SO VỚI DSLK ĐƠN. (To be continue....)
+
+ 
+
+MÔ TẢ BÀI TOÁN
+
+Viết 1 chương trình game đơn giản như sau:
+
+- Chương trình cho phép người dùng (user) chọn thực hiện 1 thao tác nào đó từ Menu, trả về kết quả thực hiện thao tác đó.
+
+- Tiếp theo bài trước, viết các hàm cho phép Thêm phần tử mới vào đầu hoặc vào cuối danh sách
+
+ 
+
+INPUT & OUTPUT
+
+ -  Theo template
+
+ 
+ 
+ 
+ void init(DList& L)
+{
+    L.pHead = NULL;
+    L.pTail = NULL;
+}
+DNode* getNode(int x)
+{
+    DNode* p = new DNode;
+    if (p != NULL) {
+        p->info = x;
+        p->pNext = NULL;
+        p->pPrev = NULL;
+    }
+    return p;
+}
+void addTail(DList& L, int x) {
+    DNode* p = getNode(x);
+    if (L.pHead == NULL)
+    {
+        L.pHead = L.pTail = p;
+    }
+    else {
+        L.pTail->pNext = p;
+        L.pTail = p;
+    }
+}
+void createList(DList& L)
+{
+ 
+    int  x;
+    while (1)
+    {
+        cin >> x;
+        if (x == -1)
+        {
+            break;
+        }
+        else
+            addTail(L, x);
+    }
+}
+void printList(DList& L)
+{
+    DNode* p = L.pHead;
+    if (p == NULL)
+    {
+        cout << "List is empty";
+    }
+    while (p != NULL)
+    {
+        cout << p->info << " ";
+        p = p->pNext;
+    }
+
+    
+
+}
+void addHead(DList& L, int x)
+{
+    DNode* p = getNode(x);
+    if (L.pHead == NULL)
+    {
+        L.pHead = p;
+        L.pTail = L.pHead;
+    }
+    else
+    {
+        p->pNext = L.pHead;
+        L.pHead->pPrev = p;
+        L.pHead = p;
+    }
+}
