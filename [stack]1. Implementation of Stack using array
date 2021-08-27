@@ -1,0 +1,89 @@
+MÔ TẢ BÀI TOÁN
+
+Stack là một vật chứa (container) các phần tử/nút có cùng kiểu dữ liệu, làm việc theo cơ chế LIFO (Last In First Out) - “Vào sau ra trước”. Thêm nút mới vào đỉnh stack và xóa nút (lấy ra) ở đỉnh stack.
+
+Có 2 cách cài đặt Stack: theo kiểu kế tiếp dùng mảng hoặc theo kiểu liên kết như 1 danh sách liên kết.
+
+Viết chương trình Cài đặt Stack dùng mảng với các thao tác chính sau:
+
+- Push(x): Thêm phần tử x vào đỉnh stack
+
+- Pop(): Xóa phần tử ở đỉnh stack.
+
+- isEmpty(): Kiểm tra xem stack có rỗng không.
+
+- isFull(): Kiểm tra xem stack đã đầy chưa.
+
+- Top(): Trả về giá trị của phần tử nằm ở đỉnh stack mà không hủy nó.
+
+ 
+
+INPUT
+
+- Một số nguyên n, 0<=n<=2000, là số phần tử của Stack
+
+- n số nguyên có giá trị trong khoảng từ 0 đến 2 tỷ, là các phần tử của stack
+
+OUTPUT
+
+- Xuất kết quả theo ví dụ bên dưới
+
+- Sử dụng template
+
+
+
+void Init(Stack& S)
+{
+    S.n = 0;
+}
+int IsEmpty(Stack S)
+{
+    return (S.n == 0);
+}
+int IsFull(Stack S)
+{
+    return (S.n == MAX);
+}
+void Push(Stack& S, int x)
+{
+    if (IsFull(S) == 1)
+    {
+        cout << "Stack is empty";
+    }
+    else
+    {
+        S.arr[S.n] = x;
+        S.n++;
+    }
+}
+void Pop(Stack& S) {
+    if (S.n == 0) {
+        cout << "Stack is empty";
+    }
+    else {
+        S.arr[S.n - 1] = NULLDATA;
+        S.n--;
+
+    }
+}
+int Top(Stack& S) {
+    if (S.n == 0) {
+        cout << "Stack is empty";
+        return NULLDATA;
+    }
+    else {
+        int x = S.arr[S.n - 1];
+        return x;
+    }
+}
+void printStack(Stack& S) {
+    if (S.n == 0) {
+        return;
+
+    }
+    else {
+        for (int i = 0; i < S.n; i++) {
+            cout << S.arr[i] << " ";
+        }
+    }
+}
