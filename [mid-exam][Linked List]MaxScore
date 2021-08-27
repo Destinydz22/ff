@@ -1,0 +1,116 @@
+MÔ TẢ BÀI TOÁN
+
+ 
+
+Viết chương trình quản lý một lớp học gồm nhiều sinh viên. Thông tin của mỗi sinh viên bao gồm: mã số sinh viên, họ và tên, ngày sinh, điểm toán, điểm lý, điểm hóa, điểm trung bình của các môn thi.
+
+ 
+
+Hãy thực hiện yêu cầu nhập xuất danh sách sinh viên và tìm sinh viên có điểm trung bình cao nhất.
+
+ 
+
+INPUT
+
+ 
+
+- Một số nguyên 0 < n <100 là số lượng sinh viên có trong danh sách.
+
+- Thông tin đầy đủ của n sinh viên. Điểm trung bình được tính tự động dựa vào điểm số của 3 môn toán, lý, hóa
+
+ 
+
+OUTPUT
+
+Xuất thông tin của sinh viên có điểm trung bình cao nhất, theo mẫu như bên dưới.
+
+- Nếu nhiều SV có điểm trung bình bằng nhau thì xuất SV có điểm trung bình cao nhất đầu tiên (theo thứ tự nhập danh sách)
+
+- Mỗi giá trị dữ liệu xuất ra màn hình cách nhau bởi 1 tab và dấu ‘|’
+
+ 
+ 
+ struct node {
+    SV info;
+    node* pnext;
+};
+struct List {
+    node* phead;
+    node* ptail;
+};
+void Init(List& L) {
+    L.phead = L.ptail = NULL;
+}
+node* getnode(SV &sv) {
+    node* p = new node;
+    if (p == NULL) {
+        cout << "sai";
+    }
+    p->info = sv;
+    p->pnext = NULL;
+    return p;
+}
+void nhapngay(DATE& date)
+{
+    cin >> date.day;
+    cin >> date.month;
+    cin >> date.year;
+}
+void nhap1sv(SV& sv)
+{
+    getline(cin,sv.id);
+   getline(cin,sv.name);
+    nhapngay(sv.dob);
+    cin >> sv.math;
+    cin >> sv.phy;
+    cin >> sv.chem;
+    sv.aver = (sv.math + sv.chem + sv.phy) / 3;
+}
+void outputStudent(SV sv)
+{
+    cout << sv.id << "\t|" << sv.name << "\t|" << sv.dob.day << "/" << sv.dob.month << "/" << sv.dob.year;
+    cout << "\t|" << sv.math << "\t|" << sv.phy << "\t|" << sv.chem << "\t|" << sv.aver << endl;
+}
+void add_tail(List& L, SV sv) {
+    node* p = getnode(sv);
+    if (L.phead == NULL) {
+        L.phead = p;
+        L.ptail = p;
+    }
+    else {
+        L.ptail->pnext = p;
+        L.ptail = p;
+    }
+}
+void inputListStudents(List& L, int& n) 
+{
+    cin >> n;
+    for (int i = 0; i < n; i++)
+    {
+        SV sv;
+        cin.ignore();
+        nhap1sv(sv);
+        add_tail(L, sv);
+   }
+}
+SV maxAverageScore(List L)
+{
+    SV sv = L.phead->info;
+    if (L.phead != NULL)
+    {
+        float temp = L.phead->info.aver;
+        node* p = L.phead->pnext;
+        while (p != NULL)
+        {
+            if (p->info.aver > temp)
+            {
+                sv = p->info;
+                temp = p->info.aver;
+                p = p->pnext;
+            }
+            else
+                p = p->pnext;
+        }
+    }
+    return sv;
+}
