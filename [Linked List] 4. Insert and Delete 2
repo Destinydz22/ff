@@ -1,0 +1,194 @@
+Trên cùng một danh sách L rỗng ban đầu, liên tiếp thực hiện các thao tác được định nghĩa bởi chuỗi các thao tác như sau:
+
+- Dòng đầu tiên là số nguyên n (0 < 0 < 10000000) là số lượng thao tác
+
+- n dòng tiếp theo, mỗi dòng định nghĩa cho thao tác thứ i, mỗi dòng là tổ hợp của 3 yếu tố, và có format như sau: x y z
+
+x: có giá trị '+' hoặc '-'. Trong đó, '+': thêm phần tử; '-': xóa phần tử.
+
+y: có giá trị 'H' hoặc 'T'. Trong đó, 'H': đầu danh sách; 'T': cuối danh sách.
+
+z: có giá trị là một số nguyên. Trong trường hợp x = '-', ta không cần quan tâm giá trị của z (z thường chỉ là một số 0). Trong trường hợp x = '+', z là giá trị sử dụng để chèn vào danh sách.
+
+Ví dụ:
+
++ H 123 // chèn 123 vào đầu danh sách.
+
++ T -21 // chèn -21 vào cuối danh sách.
+
+- H 0 // xóa phần tử đầu tiên khỏi danh sách.
+
+- T 0 // xóa phần tử cuối cùng ra khỏi danh sách.
+
+Sau khi thực hiện đầy đủ n thao thác, chương trình xuất trạng thái hiện tại của L trên cùng một dòng, mỗi phần tử cách nhau bởi một khoảng trắng và không được có khoảng trắng thừa.
+
+
+
+
+struct Node {
+	int data;
+	Node* next;
+};
+struct List {
+	Node* Head;
+	Node* Tail;
+};
+
+
+Node* createNode(int x) {
+	Node* p = new Node;
+	p->data = x;
+	p->next = NULL;
+	return p;
+}
+void createList(List& l) {
+	l.Head = NULL;
+	l.Tail = NULL;
+}
+void addHead(List& l, int x) {
+	Node* p = createNode(x);
+	if (l.Head == NULL) {
+		l.Head = p;
+		l.Tail = p;
+	}
+	else {
+		p->next = l.Head;
+		l.Head = p;
+	}
+}
+void addTail(List& l, int x) {
+	Node* p = createNode(x);
+	if (l.Head == NULL) {
+		l.Head = p;
+		l.Tail = p;
+	}
+	else {
+		l.Tail->next = p;
+		l.Tail = p;
+	}
+}
+void printList(List l) {
+	Node* temp = l.Head;
+	while (temp != NULL) {
+		cout << temp->data << " ";
+		temp = temp->next;
+	}
+}
+void AddAt(List& l, int a, int b) {
+	Node* temp = l.Head;
+	while (temp != NULL) {
+		if (temp->data == a) break;
+		else
+			temp = temp->next;
+	}
+	if (temp == NULL) {
+		addHead(l, b);
+	}
+	else {
+		Node* s = createNode(b);
+		s->next = temp->next;
+		temp->next = s;
+		if (s->next == NULL) l.Tail = s;
+	}
+}
+void DelAt(List& l, int n) {
+	Node* p = l.Head;
+	Node* q;
+	while (p != NULL) {
+		if (p->data == n) break;
+		q = p;
+		p = p->next;
+	}
+	if (p == NULL) return;
+	else {
+		if (p == l.Head) {
+			Node* temp = p;
+			l.Head = temp->next;
+			if (p == l.Tail) l.Tail == NULL;
+			temp->next = NULL;
+			delete temp;
+		}
+		else if (p == l.Tail) {
+			Node* temp = p;
+			l.Tail = q;
+			q->next = NULL;
+			delete temp;
+		}
+		else {
+			Node* temp = p;
+			q->next = temp->next;
+			temp->next = NULL;
+			delete temp;
+		}
+	}
+}
+bool check(List& l, int n) {
+	if (l.Head == NULL) return false;
+	Node* temp = l.Head;
+	while (temp != NULL) {
+		if (temp->data == n) return true;
+		temp = temp->next;
+	}
+	return false;
+}
+void DelHead(List& l) {
+	if (l.Head == NULL) return;
+	else {
+		Node* k = l.Head;
+		l.Head = l.Head->next;
+		k->next = NULL;
+		delete(k);
+	}
+}
+void DelTail(List& l) {
+	if (l.Head == NULL) return;
+	Node* p = l.Head;
+	Node* q = l.Head;
+	while (p->next != NULL) {
+		q = p;
+		p = p->next;
+	}
+	if (l.Head == l.Tail) {
+		Node* k = l.Head;
+		l.Head = NULL;
+		l.Tail = NULL;
+		delete(k);
+	}
+	else {
+		q->next = NULL;
+		l.Tail = q;
+		delete(p);
+	}
+}
+
+void DelValue(List& l, int x) {
+	if (l.Head == NULL) return;
+	Node* temp = l.Head;
+	while (true) {
+		if (check(l, x)) DelAt(l, x);
+		else break;
+	}
+}
+void add(List& l, char ch, int x) {
+	if (ch == 'H') addHead(l, x);
+	if (ch == 'T') addTail(l, x);
+}
+void sub(List& l, char ch) {
+	if (ch == 'H') DelHead(l);
+	if (ch == 'T') DelTail(l);
+}
+int main() {
+	List l;
+	createList(l);
+	int n;
+	cin >> n;
+	char a, b;
+	int x;
+	while (n > 0) {
+		cin >> a >> b >> x;
+		if (a == '+') add(l, b, x);
+		if (a == '-') sub(l, b);
+		n--;
+	}
+	printList(l);
+}
