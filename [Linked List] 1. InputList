@@ -1,0 +1,87 @@
+INPUT
+
+Input gồm nhiều dòng, mỗi dòng sẽ có cấu trúc ở 1 trong 3 dạng sau:
+
+- Dạng 0: Dòng bắt đầu bằng con số 0, theo sau là một số nguyên dương < 1000, chương trình cần phải thêm con số này vào đầu danh sách
+
+- Dạng 1: Dòng này bắt đầu bằng con số 1, theo sau là một số nguyên dương < 1000, chương trình cần phải thêm con số này vào cuối danh sách
+
+- Dạng 3: Dòng này bao gồm duy nhất một con số 3. Đây là dòng cuối cùng trong input, báo hiệu input kết thúc
+
+ 
+
+OUTPUT:
+
+In danh sách thu được sau khi thực hiện tất cả các thao tác theo yêu cầu trong input. Danh sách được in trên một dòng với mỗi số cách nhau bởi khoảng trắng.
+
+ 
+ 
+ struct node
+{
+    int info;
+    node* pnext;
+};
+struct list
+{
+    node* phead;
+    node* ptail;
+};
+node* getNode(int x)
+{
+    node* p = new node;
+    if (p != NULL) {
+        p->info = x;
+        p->pnext = NULL;
+    }
+    return p;
+}
+void TailNode(list& L, int x) {
+    node* p = getNode(x);
+    if (L.phead == NULL)
+    {
+        L.phead = L.ptail = p;
+    }
+    else {
+        L.ptail-> pnext = p;
+        L.ptail = p;
+    }
+}
+void HeadNode(list& L, int x)
+{
+    node* p = getNode(x);
+    if (L.phead == NULL)
+    {
+        L.phead = L.ptail = p;
+    }
+    p->pnext = L.phead;
+    L.phead = p;   
+}
+void Print(list L) {
+    node* p = L.phead;
+    while (p != NULL)
+    {
+        cout << p->info <<" ";
+        p = p->pnext;
+    }
+}
+int main()
+{
+    list L;
+    L.ptail = L.phead = NULL;
+    int x, y;
+    while (1) {
+        cin >> x;
+        if (x == 3)
+            break;
+        if  (x == 0) {
+            cin >> y;
+            HeadNode(L, y);
+        }
+        else
+            if (x == 1) {
+                cin >> y;
+                TailNode(L, y);
+            }
+    }
+    Print(L);
+}
