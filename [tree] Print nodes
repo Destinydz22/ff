@@ -1,0 +1,187 @@
+MÔ TẢ BÀI TOÁN
+
+ 
+
+
+Khai báo kiểu Cây nhị phân tìm kiếm có tên là Tree mà mỗi phần tử chứa một số nguyên. Hãy viết các hàm thực hiện các yêu cầu sau:
+
+Xây dựng CNPTK gồm n số nguyên, theo thứ tự các giá trị được nhập từ bàn phím.
+
+Duyệt cây theo thứ tự Node-Left-Right, Left-Node-Right, Left-Right-Node.
+
+Các nút nào là nút lá ?
+
+Các nút nào là nút trong ?
+
+Các nút có đúng 1 con.
+
+Các nút có đúng 2 con.
+
+ 
+
+ 
+
+INPUT
+
+- Một số nguyên dương n, chỉ số nút của cây, 0<n<100
+
+- Dãy gồm n số nguyên dương, đôi một khác nhau. Các giá trị được thêm vào cây theo thứ tự mà nó được nhập.
+
+ 
+
+OUTPUT
+
+- Xuất theo template.
+
+
+
+struct node 
+{
+	int info;
+	node* left;
+	node* right;
+};
+typedef node* Tree;
+node* getnode(int x)
+{
+	node* p = new node;
+	if (p == NULL)
+		return NULL;
+	p->info = x;
+	p->left = p->right = NULL;
+	return p;
+}
+node* search(node* t, int x)
+{
+	if (t != NULL)
+	{
+		if (t->info == x)
+			return t;
+		if (x < t->info)
+			return search(t->left, x); // return co nghia la den dich roi khong can tim nua, neu ko co reuturn thi co the se tim them o dau do nua
+		return search(t->right, x);
+	}
+	return NULL;
+}
+void insert(node*& t, int x)
+{
+	if (t == NULL)
+	{
+		node* p = new node;
+		p->info= x;
+		p->left = NULL;
+		p->right = NULL;
+		t = p;
+	}
+	else
+	{
+		if (x < t->info)
+			insert(t->left, x);
+		else if (x > t->info)
+			insert(t->right, x);
+	}
+}
+void inputTree(Tree& t)
+{
+	
+	int n, x;
+	cin >> n;
+	
+	for (int i = 0; i < n; i++)
+	{
+		cin >> x;
+		insert(t, x);
+	}
+}
+void NLR(Tree t)
+{
+	if (t != NULL)  //dieu kien dung
+	{
+		cout << t->info<<" "; //xu ly tuong ung voi nhu cau
+		NLR(t->left); // goi de quy
+		NLR(t->right); //goi de quy
+	}
+
+}
+void LNR(Tree t)
+{
+	if (t != NULL)  //dieu kien dung
+	{
+		LNR(t->left); // goi de quy
+		cout << t->info<<" "; //xu ly tuong ung voi nhu cau
+		LNR(t->right); //goi de quy
+	}
+
+}
+void LRN(Tree t)
+{
+	if (t != NULL)  //dieu kien dung
+	{
+		LRN(t->left); // goi de quy
+		LRN(t->right); //goi de quy
+		cout << t->info<<" "; //xu ly tuong ung voi nhu cau
+	}
+
+}
+bool isLeafNode(node* t) {
+	return (t->left == NULL && t->right == NULL);
+}
+void listLeafs(Tree t)
+{
+	if (t == NULL) return;
+	if (isLeafNode(t)==1) 
+		cout<< t->info<<" ";
+	listLeafs(t->left);
+	listLeafs(t->right);
+	
+}
+void listInternalNodes(Tree t, int i)
+{
+	if (t) 
+	{
+		if ((t->left != NULL || t->right != NULL) && i != 0)
+			cout << t->info << " ";
+		if (t->left != NULL)
+		{
+			i++;
+			listInternalNodes(t->left, i);
+		}
+		if (t->right != NULL) 
+		{ 
+			i++;
+			listInternalNodes(t->right, i); 
+		}
+	}
+}
+bool is1childNode(node* t)
+{
+	if (t->left == NULL && t->right != NULL)
+		return 1;
+	if (t->left != NULL && t->right == NULL)
+		return 1;
+	return 0;
+}
+void listNodesWithOneChild(Tree t)
+{
+	if (t == NULL) return;
+	if (is1childNode(t) == 1)
+		cout << t->info << " ";
+	listNodesWithOneChild(t->left);
+	listNodesWithOneChild(t->right);
+}
+bool is2childrenNode(node* t)
+{
+	return (t->left != NULL && t->right != NULL);
+}
+void listNodesWithTwoChildren(Tree t)
+{
+	if (t == NULL) return;
+	if (is2childrenNode(t) == 1)
+		cout << t->info << " ";
+	listNodesWithTwoChildren(t->left);
+	listNodesWithTwoChildren(t->right);
+}
+
+
+
+ 
