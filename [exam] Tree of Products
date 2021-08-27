@@ -1,0 +1,117 @@
+Tạo cây nhị phân tìm kiếm lưu thông tin về các sản phẩm của 1 công ty. Thông tin của 1 sản phẩm bao gồm:
+
+- Mã sản phẩm (Số nguyên)
+
+- Tên sản phẩm (kiểu chuỗi)
+
+- Chủng loại (giấy, kim loại, nhựa)
+
+- Năm sản xuất (số nguyên)
+
+- Số năm bảo hành
+
+Yêu cầu:
+
+a. Liệt kê các sản phẩm thuộc chủng loại nào đó
+
+b. Đếm số sản phẩm có số năm bảo hành >x
+
+c. Xoá các sản phẩm đã hết hạn bảo hành, thoả điều kiện: Năm sản xuất + số năm bảo hành < năm hiện tại (về nhà làm tiếp)
+
+ 
+
+INPUT:
+
+- Số sản phẩm
+
+- Danh sách sản phẩm
+
+- Chủng loại sản phẩm cần liệt kê
+
+- Số năm bảo hành x
+
+ 
+
+OUTPUT:
+
+Như ví dụ
+
+
+
+
+struct sp {
+    int ma;
+    string ten;
+    string loai;
+    int sanxuat;
+    int baohanh;
+};
+struct Node
+{
+    sp info;
+    Node* pLeft;
+    Node* pRight;
+};
+typedef struct Node* Tree;
+Node* getNode(sp x)
+{
+    Node* p = new Node;
+    if (p == NULL)
+        return NULL;
+    p->info = x;
+    p->pLeft = p->pRight = NULL;
+    return p;
+}
+void insertNode(Tree& T, sp x)
+{  
+    if (T)
+    {
+        if (T->info.baohanh > x.baohanh)
+            return insertNode(T->pLeft, x);
+        else
+            return insertNode(T->pRight, x);
+    }
+    T = getNode(x);
+}
+void inputTree(Tree& T)
+{
+    int n;
+    sp x;
+    cin >> n;
+    for (int i = 0; i < n; i++)
+    {
+        cin >> x.ma;
+        cin.ignore();
+        getline(cin, x.ten);
+        getline(cin, x.loai);
+        cin >> x.sanxuat;
+        cin >> x.baohanh;
+        insertNode(T, x);
+    }
+}
+void listProduct(Tree T, string type)
+{
+    if (T)
+    {
+        listProduct(T->pLeft, type);
+        listProduct(T->pRight, type);
+        if (T->info.loai == type)
+            cout << T->info.ma << "\t" << T->info.ten << "\t" << T->info.loai << "\t" << T->info.sanxuat << "\t" << T->info.baohanh << endl;
+    }
+}
+int countProduct(Tree T, int year)
+{
+    if (T)
+    {
+        if (T->info.baohanh > year)
+        {
+            return 1 + countProduct(T->pLeft, year) + countProduct(T->pRight, year);
+        }
+        else
+        {
+            return countProduct(T->pLeft, year) + countProduct(T->pRight, year);
+        }
+    }
+    else
+        return 0;
+}
