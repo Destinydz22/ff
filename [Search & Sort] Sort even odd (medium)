@@ -1,0 +1,56 @@
+MÔ TẢ BÀI TOÁN
+
+
+Hãy viết chương trình sắp xếp mảng thỏa mãn các yêu cầu sau đây:
+
+Số chẵn đứng trước, số lẻ đứng sau. Các phần tử tăng dần theo nhóm số chẵn hoặc số lẻ
+
+
+INPUT
+
+
+- Dòng đầu tiên chứa số n (n < 10000). Đây là số lượng phần tử trong mảng.
+
+- n dòng tiếp theo, mỗi dòng là một số nguyên dương có giá trị không quá một tỷ.
+
+
+OUTPUT
+
+
+Xuất các số trong mảng ra theo thứ tự trên đề bài
+
+
+
+
+using namespace std;
+void nhap(int a[], int n)
+{
+	for (int i = 0; i < n; i++)
+		cin >> a[i];
+}
+void xuat(int a[], int n)
+{
+	for (int i = 0; i < n; i++)
+		cout << a[i]<<endl;
+}
+void sort(int a[], int n)
+{
+	int i, j;
+	for (i = 0; i < n - 1; i++)
+		for (j = i + 1; j < n; j++)
+			if ((a[i] % 2 != 0 && a[j] % 2 == 0) || (a[i] % 2 == 0 && a[j] % 2 == 0 && a[i] > a[j])|| (a[i] % 2 != 0 && a[j] % 2 != 0 && a[i] > a[j]))
+			{
+				int t = a[i];
+				a[i] = a[j];
+				a[j] = t;
+			}
+}
+int main()
+{
+	int n;
+	cin >> n;
+	int a[1000];
+	nhap(a, n);
+	sort(a, n);
+	xuat(a, n);
+}
