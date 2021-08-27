@@ -1,0 +1,116 @@
+MÔ TẢ BÀI TOÁN
+
+Hãy viết chương trình thực hiện thao tác “Nhập xuất cơ bản một danh sách liên kết đơn” với những yêu cầu sau:
+
+- Nhập một danh sách gồm n phần tử. Thêm phần tử mới vào cuối danh sách.
+
+- Xuất danh sách. Nếu danh sách rỗng thì xuất thông báo "List is empty".
+
+- Xuất tất cả những giá trị được lưu trong danh sách mà lớn hơn giá trị m cho trước. Nếu danh sách rỗng thì xuất thông báo “List is empty”. Nếu danh sách không rỗng nhưng không tìm thấy giá trị nào thỏa yêu cầu thì xuất “None”.
+
+INPUT
+
+ - Số nguyên đầu tiên là n (0 <= n <= 1.000.000). Đây là số lượng phần tử trong danh sách.
+
+- n số nguyên tiếp theo là các giá trị được lưu vào danh sách, có giá trị không quá 2 tỷ.
+
+- Số nguyên m (0 <= m <= 1.000.000) là giá trị được dùng để kiểm tra
+
+ **SV không cần kiểm tra điều kiện nhập
+
+OUTPUT
+
+- Xuất theo template
+
+
+
+
+
+struct node {
+    int info;
+    node* pnext;
+};
+struct List {
+    node* phead;
+    node* ptail;
+};
+void Init(List& L) {
+    L.phead = L.ptail = NULL;
+}
+node* getnode(int x) {
+    node* p = new node;
+    if (p == NULL) {
+        cout << "Can't active node.";
+        exit(1);
+    }
+    p->info = x;
+    p->pnext = NULL;
+    return p;
+}
+void add_tail(List& L, int x) {
+    node* p = getnode(x);
+    if (L.phead == NULL) {
+        L.phead = p;
+        L.ptail = p;
+    }
+    else {
+        L.ptail->pnext = p;
+        L.ptail = p;
+    }
+}
+void inputList(List& L, int n) {
+    if (n == 0) {
+        L.phead = NULL;
+        return;
+    }
+    for (int i = 1; i <= n; i++) {
+        int x;
+        cin >> x;
+        add_tail(L, x);
+    }
+
+}
+void outputList(List L) {
+    node* Prc = L.phead;
+    if (Prc == NULL) {
+        cout << "List is empty";
+    }
+    while (Prc != NULL) {
+        cout << Prc->info << " ";
+        Prc = Prc->pnext;
+    }
+    return;
+}
+void add_head(List& L, int x) {
+    node* p = getnode(x);
+    if (L.phead == NULL) {
+        L.phead = p;
+        L.ptail = p;
+    }
+    else {
+        p->pnext = L.phead;
+        L.phead = p;
+    }
+}
+void outputGreaterThan(List& L, int x) {
+    node* p_check = L.phead;
+    node* count = getnode(1);
+    if (L.phead == NULL) {
+        cout << "List is empty";
+        return;
+    }
+    while (p_check != NULL) {
+
+        if (p_check->info > x) {
+            cout << p_check->info << " ";
+            p_check = p_check->pnext;
+            count->info = 2;
+        }
+        else
+            p_check = p_check->pnext;
+    }
+    if (count->info == 1) {
+        cout << "None";
+    }
+
+}
