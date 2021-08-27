@@ -1,0 +1,80 @@
+MÔ TẢ BÀI TOÁN
+
+Cho một chuỗi str gồm nhiều từ đơn,  mỗi từ được viết cách nhau bởi 1 (hay nhiều) khoảng trắng. Chúng ta cần in ngược lại mỗi từ, tức là  Đảo lại các kí tự trong từng từ của chuỗi đã cho.
+
+INPUT
+
+- Gồm 1 dòng duy nhất chứa chuỗi kí tự cần xem xét, chuỗi chứa không quá 256 ký tự
+
+OUTPUT
+
+- Xuất ra kết quả đảo ngược chuỗi
+
+PHƯƠNG PHÁP
+
+Cách 1 (Nhập môn lập trình): Duyệt qua chuỗi và nhận diện các từ (bằng cách đi qua 1 dãy ký tự cho đến khi gặp khoảng trắng thì kết thúc 1 từ). Ứng với mỗi từ, in đảo ngược các ký tự có trong chuỗi.
+
+Cách 2 (Sử dụng 1 stack):  Duyệt qua từng ký tự của chuỗi, lần lượt đẩy các ký tự vào stack cho đến khi gặp khoảng trắng là được 1 từ, sau đó in và lấy các ký tự ra khỏi stack, ta được 1 chuỗi đảo ngược của từ đang xét. Tiếp tục xử lý cho các từ kế tiếp.
+
+Theo quy tắc hoạt động của stack thì ta chỉ được thêm vào đỉnh stack và lấy ra cũng từ  đỉnh stack. Do đó, ký tự nào được thêm (push) vào sau cùng sẽ được lấy ra (pop) trước, nên ký tự ở vị trí cuối từ sẽ được in ra trước, phù hợp với yêu cầu “in đảo ngược các từ”.
+
+ 
+ 
+ void Init2(Stack2& s)
+{
+    s.pHead = NULL;
+}
+int isEmpty(Stack2 s)
+{
+    if (s.pHead == NULL)
+        return 1;
+    return 0;
+}
+node* getnode(char x)
+{
+    node* t = new node;
+    t->info = x;
+    t->next = NULL;
+    return t;
+}
+void addnode(Stack2& s, char x)
+{
+    node* t = getnode(x);
+    if (s.pHead == NULL)
+        s.pHead = t;
+    else
+    {
+        t->next = s.pHead;
+        s.pHead = t;
+    }
+}
+void outputStack2(Stack2& s)
+{
+    if (s.pHead != NULL)
+    {
+        node* t = s.pHead;
+        while (t != NULL)
+        {
+            cout << t->info;
+            t = t->next;
+        }
+    }
+    s.pHead = NULL;
+}
+void reverseWords(string str)
+{
+    Stack2 s2;
+    Init2(s2);
+    int length = str.length();
+    for (int i = 0; i < length; i++)
+    {
+        if (str[i] == ' ')
+        {
+            outputStack2(s2);
+            cout << str[i];
+        }
+        else
+            addnode(s2, str[i]);
+    }
+    outputStack2(s2);
+}
