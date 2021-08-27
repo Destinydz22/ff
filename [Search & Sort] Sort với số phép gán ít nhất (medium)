@@ -1,0 +1,175 @@
+Cho một chương trình được viết sẵn như sau:
+
+ 
+
+/*###Begin banned keyword - each of the following line if appear in code will raise error. regex supported
+
+define
+
+include
+
+###End banned keyword*/
+
+ 
+
+#include <iostream>
+
+using namespace std;
+
+ 
+
+class Data{
+
+private:
+
+int x;
+
+static int assignment_count;
+
+static int n;
+
+public:
+
+ 
+
+friend ostream& operator<<(ostream &os, const Data& a);
+
+friend istream& operator>>(istream &os, Data& a) ;
+
+static void set_n(int n){
+
+if (Data::n == 0) Data::n = n;
+
+else cout << "WRONG";
+
+}
+
+Data& operator=(const Data& a){
+
+assignment_count++;
+
+if (assignment_count > 3* Data::n){
+
+cout << "WRONG";
+
+}
+
+this->x = a.x;
+
+return *this;
+
+}
+
+ 
+
+bool operator<(const Data& a){
+
+return this->x < a.x;
+
+}
+
+};
+
+int Data::assignment_count = 0;
+
+int Data::n = 0;
+
+ 
+
+ostream& operator<<(ostream &os, const Data& a){
+
+return os << a.x;
+
+}
+
+istream& operator>>(istream &os, Data& a){
+
+return os >> a.x;
+
+}
+
+ 
+
+ 
+
+//###INSERT CODE HERE -
+
+ 
+
+ 
+
+int main(){
+
+int n;
+
+cin >> n;
+
+Data::set_n(n);
+
+ 
+
+Data *A = new Data[n];
+
+for (int i = 0; i < n; i++){
+
+int x;
+
+cin >> A[i];
+
+}
+
+ 
+
+select_sort(A, n);
+
+ 
+
+for(int i = 0; i < n; i++){
+
+cout << A[i] << " " ;
+
+}
+
+}
+
+ 
+
+ 
+
+ 
+
+Đoạn code trên khai báo một sẵn một cấu trúc dữ liệu gọi là Data có thể chứa số nguyên. Trên cấu trúc Data định nghĩa sẵn phép gán, phép so sánh bé hơn và toán tử nhập xuất, ngoài ra không thể thao tác gì thêm. Tuy nhiên số lần thực hiện phép gán được giới hạn không vượt quá 3*n với n là một giá trị toàn cục
+
+ 
+
+Hãy viết những dòng code cần thiết để khi chèn chúng vào dòng //###INSERT CODE HERE - thì ta có một chương trình hoàn chỉnh có thể sắp xếp mảng n phần tử kiểu Data theo thứ tự tăng dần. Đoạn code không được chứa từ khóa define và include
+
+ 
+
+INPUT:
+
+Dòng đầu tiên chứa số nguyên dương n (n < 1.000.000) là độ dài mảng cần sắp xếp
+
+Dòng tiếp theo chứa n số nguyên cách nhau bởi khoảng trắng
+
+ 
+
+OUTPUT:
+
+Xuất ra trên một dòng n số nguyên trong mảng đã sắp xếp theo thứ tự tăng dần
+
+
+void select_sort(Data A[], int n)
+{
+    int i, j, min_idx;
+    for (i = 0; i < n - 1; i++)
+    {
+        min_idx = i;
+        for (j = i + 1; j < n; j++)
+            if (A[j] < A[min_idx])
+                min_idx = j;
+        swap(A[min_idx], A[i]);
+    }
+}
+
+
